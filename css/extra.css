@@ -1,0 +1,103 @@
+/* ------------------------------- Layout Constraints ------------------------------- */
+
+/* Set the maximum width of main grid, content area, and inner wrapper */
+.md-grid,
+.md-content,
+.md-main__inner {
+    max-width: 2000px !important;
+}
+/* ---------------------------------------------------------------------------------- */
+
+
+
+/* ---------------------------------- Table Styling --------------------------------- */
+
+/* Force all tables to occupy full width */
+.md-typeset__table {
+    width: 100%;
+}
+
+/* Ensure tables without a class are displayed as HTML tables */
+.md-typeset__table table:not([class]) {
+    display: table;
+}
+
+/* Light theme: apply alternate row background color to odd rows */
+[data-md-color-scheme="default"] .md-typeset table:not([class]) tbody tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Dark theme: apply alternate row background color to odd rows */
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) tbody tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Light theme: collapse table borders */
+[data-md-color-scheme="default"] .md-typeset table:not([class]) {
+    border-collapse: collapse;
+}
+
+/* Light theme: set border style for table cells */
+[data-md-color-scheme="default"] .md-typeset table:not([class]) th,
+[data-md-color-scheme="default"] .md-typeset table:not([class]) td {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    padding: 4px 8px !important;
+}
+
+/* Dark theme: collapse table borders */
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) {
+    border-collapse: collapse;
+}
+
+/* Dark theme: set border style for table cells (faint white vertical lines) */
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th,
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) td {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 4px 8px !important;
+}
+
+/* Reduce font size and line height in table cells */
+.md-typeset > :not(pre) > table:not([class]) {
+    font-size: 0.9rem;
+    line-height: 1.1;
+}
+/* ---------------------------------------------------------------------------------- */
+
+
+/* ------------------------------- Code Block Styling ------------------------------- */
+
+/* Light theme: inline code style (not in code blocks) */
+[data-md-color-scheme="default"] .md-typeset :not(pre) > code {
+    color: #c7254e;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 0.1em 0.3em;
+    font-weight: 500;
+}
+
+/* Dark theme: inline code style (not in code blocks) */
+[data-md-color-scheme="slate"] .md-typeset :not(pre) > code {
+    color: #c6d82e;
+    background: none;
+    border: 1px solid #555;
+    border-radius: 3px;
+    padding: 0.1em 0.3em;
+    font-weight: 500;
+}
+/* ---------------------------------------------------------------------------------- */
+
+
+/* ------------------------------ Content Tabs Styling ------------------------------ */
+
+/* Add a lightgray frame */
+.md-typeset .tabbed-set {
+    border: 0.2px solid lightgray;
+}
+
+/* Set left and right paddings */
+.md-typeset .tabbed-content {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+/* ---------------------------------------------------------------------------------- */

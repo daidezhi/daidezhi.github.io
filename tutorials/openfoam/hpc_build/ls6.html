@@ -1,0 +1,2416 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Dezhi Dai">
+      
+      
+        <link rel="canonical" href="https://ddai.me/tutorials/openfoam/hpc_build/ls6.html">
+      
+      
+        <link rel="prev" href="../../../index.html">
+      
+      
+      
+      <link rel="icon" href="../../../images/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+    
+    
+      
+        <title>TACC Lonestar6 - My Journey in CFD</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+  
+  
+  
+  
+  <style>:root{--md-annotation-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M22%2012a10%2010%200%200%201-10%2010A10%2010%200%200%201%202%2012%2010%2010%200%200%201%2012%202a10%2010%200%200%201%2010%2010m-12%206%206-6-6-6-1.4%201.4%204.6%204.6-4.6%204.6z%22/%3E%3C/svg%3E');}</style>
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="lime" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-about" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../index.html" title="My Journey in CFD" class="md-header__button md-logo" aria-label="My Journey in CFD" data-md-component="logo">
+      
+  <img src="../../../images/logo_dezhi.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Journey in CFD
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              TACC Lonestar6
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="lime" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0 9.821 9.821 0 0 0-17.64 0"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../index.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About Me
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="ls6.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../index.html" title="My Journey in CFD" class="md-nav__button md-logo" aria-label="My Journey in CFD" data-md-component="logo">
+      
+  <img src="../../../images/logo_dezhi.png" alt="logo">
+
+    </a>
+    My Journey in CFD
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About Me
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    OpenFOAM
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            OpenFOAM
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_1" id="__nav_2_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    HPC Build
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            HPC Build
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    TACC Lonestar6
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ls6.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    TACC Lonestar6
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. About
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. About">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-compute-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Compute Nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-citizenship" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Citizenship
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-file-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 File Systems
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-prepare-for-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Prepare for Build
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Prepare for Build">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-download-openfoam-v2312" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Download OpenFOAM-v2312
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-update-workopenfoamopenfoam-v2312etcbashrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Update $WORK/OpenFOAM/OpenFOAM-v2312/etc/bashrc
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-update-relevant-configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Update Relevant Configuration Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-download-geometricvofext" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.4 Download geometricVofExt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Build
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Build">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-compile-cgal-with-gmp-and-mpfr-using-system-gcc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Compile CGAL with GMP and MPFR Using System GCC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-build-ccmio-261" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Build ccmio 2.6.1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-build-openfoam-v2312" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Build OpenFOAM-v2312
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-enable-initial-time-sampling-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 Enable Initial Time Sampling (optional)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-build-geometricvofext" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.5 Build geometricVofExt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. About
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. About">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-compute-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Compute Nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-citizenship" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Citizenship
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-file-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 File Systems
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-prepare-for-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Prepare for Build
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Prepare for Build">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-download-openfoam-v2312" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Download OpenFOAM-v2312
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-update-workopenfoamopenfoam-v2312etcbashrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Update $WORK/OpenFOAM/OpenFOAM-v2312/etc/bashrc
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-update-relevant-configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Update Relevant Configuration Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-download-geometricvofext" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.4 Download geometricVofExt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Build
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Build">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-compile-cgal-with-gmp-and-mpfr-using-system-gcc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Compile CGAL with GMP and MPFR Using System GCC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-build-ccmio-261" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Build ccmio 2.6.1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-build-openfoam-v2312" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Build OpenFOAM-v2312
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-enable-initial-time-sampling-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 Enable Initial Time Sampling (optional)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-build-geometricvofext" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.5 Build geometricVofExt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="tacc-lonestar6">TACC Lonestar6<a class="headerlink" href="#tacc-lonestar6" title="Permanent link">&para;</a></h1>
+<h2 id="1-about">1. About<a class="headerlink" href="#1-about" title="Permanent link">&para;</a></h2>
+<h3 id="11-compute-nodes">1.1 Compute Nodes<a class="headerlink" href="#11-compute-nodes" title="Permanent link">&para;</a></h3>
+<p><a href="https://tacc.utexas.edu/systems/lonestar6/" target="_blank">Lonestar6</a> is an HPC cluster operated by the Texas Advanced Computing Center (<a href="https://tacc.utexas.edu/" target="_blank">TACC</a>). It comprises 560 compute nodes, each delivering up to 5 TFlops of peak performance and equipped with 256 GB of DRAM. The specifications of the compute node are listed below (<em>the table is from <a href="https://docs.tacc.utexas.edu/hpc/lonestar6/#table1" target="_blank">Lonestar6 User Guide</a></em>).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Specification</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">CPU</td>
+<td style="text-align: left;">2x AMD EPYC 7763 64-Core Processor ("Milan")</td>
+</tr>
+<tr>
+<td style="text-align: left;">Total cores per node</td>
+<td style="text-align: left;"><code>128</code> cores on two sockets (64 cores/socket)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hardware threads per core</td>
+<td style="text-align: left;">1 per core</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hardware threads per node</td>
+<td style="text-align: left;">128 x 1 = <code>128</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Clock rate</td>
+<td style="text-align: left;">2.45 GHz (Boost up to 3.5 GHz)</td>
+</tr>
+<tr>
+<td style="text-align: left;">RAM</td>
+<td style="text-align: left;">256 GB (3200 MT/s) DDR4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Local storage</td>
+<td style="text-align: left;">288 GB /tmp partition on a 288 GB SSD</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-citizenship">1.2 Citizenship<a class="headerlink" href="#12-citizenship" title="Permanent link">&para;</a></h3>
+<p><code>Lonestar6</code> and also any other HPC systems are shared by all of the users. Therefore what you do on the systems does affect others. Exercise <code>good citizenship</code> to ensure that your activity does not adversely impact the system and other users. Any of the following operations but not limited to will lead <strong><code>warnings/access privileges revocations/project terminations/criminal prosecutions</code></strong>:</p>
+<div class="admonition failure">
+<p class="admonition-title">Prohibited Operations</p>
+<ul>
+<li>Mining cryptocurrency and/or use block-chain technology for personal gain</li>
+<li>Installing or using any protected software or data</li>
+<li>Sharing user credentials</li>
+<li>Infringing upon someone else's copyright</li>
+<li>Circumventing login procedures to gain access where you are not allowed</li>
+<li>Scanning or probing any information deliberately without prior authorization</li>
+<li>Any usage for commercial purposes or personal gain</li>
+<li>Modifying file access for the purpose of circumventing purge policies</li>
+<li><strong>Running jobs on the login nodes</strong></li>
+<li><strong>Stressing the file systems</strong></li>
+</ul>
+<details class="example">
+<summary>The last two operations are common reasons for a ticket. I have received a ticket in 2019 regarding <em>file system stress</em>.</summary>
+<blockquote>
+<p>Ticket No. 50733</p>
+<p>Recent job(s) and filesystem related issues</p>
+</blockquote>
+<ul>
+<li><strong><code>TACC</code></strong> Hello, Over this past weekend the $WORK filesystem was under heavy stress. This was affected system wide. The system admins traced some of the issues back to jobs you submitted. While there were other factors involved some of your jobs raised some concerns. Can you please provide a brief summary of what you are attempting to run and how IO is being handled? A full directory path to your job script and log/error files would be helpful. Any additional information is helpful as well. Best,</li>
+<li><strong><code>ME</code></strong> Dear ###, I am sorry for this issue. Our job submitted to the system is a parallel CFD simulation case with OpenFOAM flow solver (10 nodes, 240 mpi threads allocated, will write data to disk every 10 minutes approximately). I noticed the heavy stress in the file system around 2:00 am this morning, because the simulation became very very slow (never happened before), the solver is always waiting for data writing. At that time, I just thought that might be the system issues. Because we did many parallel simulation before, and everything was OK. This morning, I killed the job (ID 2005083). The log/error files for this job can be found in '###.out' and '###.err'. The slurm job script is '###'. We are always following the usage policy of TACC. If you found the reason, please tell us in details since we can work this out together. Also please do let me know if you have any other questions. Sincerely, Dezhi Dai</li>
+<li><strong><code>ME</code></strong> What's more, in this case, since the mesh will be decomposed to 240 sub ones, the solver will write simulation results to the 240 sub folders at the same time. Hope this info helps for identifying.</li>
+<li><strong><code>ME</code></strong> Dear ###, I might found the reason. Our flow solver is based on OpenFOAM and no change to the IO modules. Here is the info about IO for parallel jobs in OpenFOAM (from '<a href="https://openfoam.com/releases/openfoam-v1712/parallel.php" target="_blank">https://openfoam.com/releases/openfoam-v1712/parallel.php</a>'): <code>OpenFOAM’s input and output (I/O) system has received an update that provides users with the choice of how to read and write OpenFOAM data files. All I/O is now redirected through an object called fileHandler. This file handler can be selected through a standard run-time selection model. This release ships with three file handlers which differ in how they handle parallel operation: uncollated : This is the normal behaviour where in parallel every processor writes its own processorXXX directory. masterUncollated : Special version of uncollated that performs all I/O on the master, and therefore does not require NFS (but is slower). collated : This writes all processors into a single file. This drastically reduce the number of files generated for parallel runs. For each output time a single field file is assembled, as opposed to all fields being written per processor, e.g. Looking at the $FOAM_CASE directory, instead of seeing directories processor0 … processorN, a single processors directory is written.</code> The 'uncollated' scheme has been used in Job 2005083. Please do let me know if you have some new findings. Thanks, Dezhi Dai</li>
+<li><strong><code>TACC</code></strong> Dezhi, Thank you for providing all the information. What had occurred over the weekend was that a number of users across the different systems were all utilizing the /work filesystem. For the most part, the jobs on their own wouldn't cause quite the damage. However, with all these jobs running and utilizing /work there was many requests being made to the Meta Data Servers which caused a slowdown. Again, while not detrimental on their own all these different jobs together created the "perfect storm" which resulted in the filesystem to go down. However, your last comment about the uncollated scheme leads me to also think that added additional work on the filesystem that may not have been seen with another method. We advise users to not run out of /work but to utilize /scratch (<a href="https://portal.tacc.utexas.edu/user-guides/stampede2#overview-filesystems" target="_blank">https://portal.tacc.utexas.edu/user-guides/stampede2#overview-filesystems</a>). I understand this is a link to the stampede2 user guide but the same information applies. If you are on a system that doesn't have a /scratch filesystem, such as maverick2, then if possible use /tmp. Essentially, use /scratch when possible as it avoids added stress to /work which is mounted across all tacc systems and prone to more users on it. Here are some additional tips about use of the filesystems: <a href="https://portal.tacc.utexas.edu/user-guides/stampede2#using-citizenship-filesystems" target="_blank">https://portal.tacc.utexas.edu/user-guides/stampede2#using-citizenship-filesystems</a> Best,</li>
+</ul>
+</details>
+<div class="admonition warning">
+<p class="admonition-title">Login Node Usages</p>
+<ul>
+<li>The login nodes are for</li>
+<li>Editing and managing files</li>
+<li>Compiling code <em>(small scale)</em></li>
+<li>Submitting and tracking jobs</li>
+<li>Do <strong>NOT</strong></li>
+<li>Run jobs</li>
+<li>Perform intensive computational activities, even for post-processing</li>
+</ul>
+</div>
+</div>
+<h3 id="13-file-systems">1.3 File Systems<a class="headerlink" href="#13-file-systems" title="Permanent link">&para;</a></h3>
+<p>The most common used directories are <code>$HOME</code>, <code>$WORK</code> and <code>$SCRATCH</code>. The <code>$HOME</code> and <code>$WORK</code> are for storage and keeping track of important items. Actual job activity, reading and writing to disk, should be offloaded to your resource's <code>$SCRATCH</code> file system.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To check the absolute paths of the <code>$HOME</code>, <code>$WORK</code> and <code>$SCRATCH</code>, run the following commands in the terminal</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$HOME</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$WORK</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$SCRATCH</span>
+</span></code></pre></div></td></tr></table></div>
+</div>
+<table>
+<thead>
+<tr>
+<th>File System</th>
+<th>Quota</th>
+<th>Best Storage Practices</th>
+<th>Best Activities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><br/><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 17h-8v-1c0-1.33 2.67-2 4-2s4 .67 4 2m-4-7a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m5-3h-8l-2-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2"/></svg></span> <code>$HOME</code></td>
+<td><br/><code>10 GB</code>/<code>200,000 files</code></td>
+<td>cron jobs<br/>small scripts<br/>environment settings</td>
+<td>compiling<br/>editing</td>
+</tr>
+<tr>
+<td><br/><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 4 2 2h8a2 2 0 0 1 2 2v3.5c-.77-.32-1.61-.5-2.5-.5a6.5 6.5 0 0 0-6.5 6.5c0 .89.18 1.73.5 2.5H4a2 2 0 0 1-2-2V6c0-1.11.89-2 2-2zm9 8v1.5a4 4 0 0 1 4 4c0 .82-.25 1.58-.67 2.21l-1.09-1.09c.17-.34.26-.72.26-1.12A2.5 2.5 0 0 0 19 15v1.5l-2.25-2.25zm0 11v-1.5a4 4 0 0 1-4-4c0-.82.25-1.58.67-2.21l1.09 1.09c-.17.34-.26.72-.26 1.12A2.5 2.5 0 0 0 19 20v-1.5l2.25 2.25z"/></svg></span> <code>$WORK</code></td>
+<td><br/><code>1 TB</code>/<code>3,000,000 files</code></td>
+<td>store software installations<br/>original datasets that can't be reproduced<br/>job scripts and templates</td>
+<td>staging datasets</td>
+</tr>
+<tr>
+<td><br/><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h7.26c1.31 1.88 3.45 3 5.74 3a7 7 0 0 0 7-7c0-1.83-.72-3.58-2-4.89V8a2 2 0 0 0-2-2h-8L9 4zm13 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m-1 1v5l3.61 2.16.75-1.22-2.86-1.69V12z"/></svg></span> <code>$SCRATCH</code></td>
+<td><br/><code>no quota</code></td>
+<td><strong>Temporary Storage</strong><br/>I/O files<br/>job files<br/>temporary datasets</td>
+<td>all job I/O activity<br/>see TACC's <a href="https://docs.tacc.utexas.edu/hpc/lonestar6/#scratchpolicy" target="_blank">Scratch File System Purge Policy</a>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition danger">
+<p class="admonition-title">TACC's <a href="https://docs.tacc.utexas.edu/hpc/lonestar6/#scratchpolicy" target="_blank">Scratch File System Purge Policy</a></p>
+<p>The <code>$SCRATCH</code> file system, as its name indicates, is a temporary storage space. Files that have not been accessed in ten days are subject to purge. <strong>Deliberately modifying file access time (using any method, tool, or program) for the purpose of circumventing purge policies is prohibited</strong>.</p>
+<p>The operating system updates a file's access time when that file is modified on a login or compute node. Reading or executing a file/script on a login node does not update the access time, but reading or executing on a compute node does update the access time. This approach helps us distinguish between routine management tasks (e.g. <code>tar</code>, <code>scp</code>) and production use. Use the command <code>ls -ul</code> to view access times.</p>
+</div>
+<h2 id="2-prepare-for-build">2. Prepare for Build<a class="headerlink" href="#2-prepare-for-build" title="Permanent link">&para;</a></h2>
+<div class="admonition question">
+<p class="admonition-title">Why using <code>$WORK</code> instead of <code>$HOME</code>?</p>
+<p>Due to disk space and file count limitations in the <code>$HOME</code> directory, this guide uses the <code>$WORK</code> directory for building OpenFOAM. The <code>$WORK</code> directory offers higher quotas for both storage and the number of files, making it more suitable for large software builds.</p>
+</div>
+<h3 id="21-download-openfoam-v2312">2.1 Download <code>OpenFOAM-v2312</code><a class="headerlink" href="#21-download-openfoam-v2312" title="Permanent link">&para;</a></h3>
+<p>The OpenFOAM packages are available at <a href="https://dl.openfoam.com" target="_blank"><code>https://dl.openfoam.com</code></a>. For <code>OpenFOAM-v2312</code>:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$WORK</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span>OpenFOAM<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>mkdir<span class="w"> </span>OpenFOAM
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="nb">cd</span><span class="w"> </span>OpenFOAM
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span>OpenFOAM-v2312.tgz<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>wget<span class="w"> </span>https://dl.openfoam.com/source/v2312/OpenFOAM-v2312.tgz
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span>OpenFOAM-v2312<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>tar<span class="w"> </span>-xzf<span class="w"> </span>OpenFOAM-v2312.tgz
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span>ThirdParty-v2312.tgz<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>wget<span class="w"> </span>https://dl.openfoam.com/source/v2312/ThirdParty-v2312.tgz
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span>ThirdParty-v2312<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>tar<span class="w"> </span>-xzf<span class="w"> </span>ThirdParty-v2312.tgz
+</span></code></pre></div></td></tr></table></div>
+<h3 id="22-update-workopenfoamopenfoam-v2312etcbashrc">2.2 Update <code>$WORK/OpenFOAM/OpenFOAM-v2312/etc/bashrc</code><a class="headerlink" href="#22-update-workopenfoamopenfoam-v2312etcbashrc" title="Permanent link">&para;</a></h3>
+<p>Modify the default installation path in <code>$WORK/OpenFOAM/OpenFOAM-v2312/etc/bashrc</code> by changing the base directory from <code>$HOME</code> to <code>$WORK</code>. This ensures that all user-specific OpenFOAM files are stored under the <code>$WORK</code> directory.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Line No.</th>
+<th style="text-align: left;">From</th>
+<th style="text-align: left;">To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>125</code></td>
+<td style="text-align: left;"><code>projectDir="$HOME/OpenFOAM/OpenFOAM-$WM_PROJECT_VERSION"</code></td>
+<td style="text-align: left;"><code>projectDir="$WORK/OpenFOAM/OpenFOAM-$WM_PROJECT_VERSION"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>175</code></td>
+<td style="text-align: left;"><code>$HOME/$WM_PROJECT/${USER:-user} $FOAM_USER_APPBIN $FOAM_USER_LIBBIN \</code></td>
+<td style="text-align: left;"><code>$WORK/$WM_PROJECT/${USER:-user} $FOAM_USER_APPBIN $FOAM_USER_LIBBIN \</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>183</code></td>
+<td style="text-align: left;"><code>export WM_PROJECT_USER_DIR="$HOME/$WM_PROJECT/${USER:-user}-$WM_PROJECT_VERSION"</code></td>
+<td style="text-align: left;"><code>export WM_PROJECT_USER_DIR="$WORK/$WM_PROJECT/${USER:-user}-$WM_PROJECT_VERSION"</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-update-relevant-configuration-files">2.3 Update Relevant Configuration Files<a class="headerlink" href="#23-update-relevant-configuration-files" title="Permanent link">&para;</a></h3>
+<p>The system uses the following compilers, libraries, and tools:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M308.5 135.3c7.1-6.3 9.9-16.2 6.2-25-2.3-5.3-4.8-10.5-7.6-15.5l-3.1-5.4c-3-5-6.3-9.9-9.8-14.6-5.7-7.6-15.7-10.1-24.7-7.1L241.3 77c-10.7-8.8-23-16-36.2-20.9l-6.1-29c-1.9-9.3-9.1-16.7-18.5-17.8-6.6-.9-13.3-1.3-20.1-1.3h-.7q-10.2 0-20.1 1.2c-9.4 1.1-16.6 8.6-18.5 17.8L115 56.1c-13.3 5-25.5 12.1-36.2 20.9l-28.3-9.2c-9-3-19-.5-24.7 7.1-3.5 4.7-6.8 9.6-9.9 14.6l-3 5.3c-2.8 5-5.3 10.2-7.6 15.6-3.7 8.7-.9 18.6 6.2 25l22.2 19.8c-1.1 6.7-1.7 13.7-1.7 20.8s.6 14.1 1.7 20.9l-22.2 19.8c-7.1 6.3-9.9 16.2-6.2 25 2.3 5.3 4.8 10.5 7.6 15.6l3 5.2c3 5.1 6.3 9.9 9.9 14.6 5.7 7.6 15.7 10.1 24.7 7.1l28.2-9.3c10.7 8.8 23 16 36.2 20.9l6.1 29.1c1.9 9.3 9.1 16.7 18.5 17.8q10.05 1.2 20.4 1.2c10.35 0 13.7-.4 20.4-1.2 9.4-1.1 16.6-8.6 18.5-17.8l6.1-29.1c13.3-5 25.5-12.1 36.2-20.9l28.2 9.3c9 3 19 .5 24.7-7.1 3.5-4.7 6.8-9.5 9.8-14.6l3.1-5.4c2.8-5 5.3-10.2 7.6-15.5 3.7-8.7.9-18.6-6.2-25l-22.2-19.8c1.1-6.8 1.7-13.8 1.7-20.9s-.6-14.1-1.7-20.9l22.2-19.8zM112 176a48 48 0 1 1 96 0 48 48 0 1 1-96 0m392.7 324.5c6.3 7.1 16.2 9.9 25 6.2 5.3-2.3 10.5-4.8 15.5-7.6l5.4-3.1c5-3 9.9-6.3 14.6-9.8 7.6-5.7 10.1-15.7 7.1-24.7l-9.3-28.2c8.8-10.7 16-23 20.9-36.2L613 391c9.3-1.9 16.7-9.1 17.8-18.5q1.2-10.05 1.2-20.4c0-10.35-.4-13.7-1.2-20.4-1.1-9.4-8.6-16.6-17.8-18.5l-29.1-6.2c-5-13.3-12.1-25.5-20.9-36.2l9.3-28.2c3-9 .5-19-7.1-24.7-4.7-3.5-9.6-6.8-14.6-9.9l-5.3-3c-5-2.8-10.2-5.3-15.6-7.6-8.7-3.7-18.6-.9-25 6.2l-19.8 22.2c-6.8-1.1-13.8-1.7-20.9-1.7s-14.1.6-20.9 1.7l-19.8-22.2c-6.3-7.1-16.2-9.9-25-6.2-5.3 2.3-10.5 4.8-15.6 7.6l-5.2 3c-5.1 3-9.9 6.3-14.6 9.9-7.6 5.7-10.1 15.7-7.1 24.7l9.3 28.2c-8.8 10.7-16 23-20.9 36.2l-29.1 6c-9.3 1.9-16.7 9.1-17.8 18.5q-1.2 10.05-1.2 20.4c0 10.35.4 13.7 1.2 20.4 1.1 9.4 8.6 16.6 17.8 18.5l29.1 6.1c5 13.3 12.1 25.5 20.9 36.2l-9.3 28.2c-3 9-.5 19 7.1 24.7 4.7 3.5 9.5 6.8 14.6 9.8l5.4 3.1c5 2.8 10.2 5.3 15.5 7.6 8.7 3.7 18.6.9 25-6.2l19.8-22.2c6.8 1.1 13.8 1.7 20.9 1.7s14.1-.6 20.9-1.7l19.8 22.2zM464 304a48 48 0 1 1 0 96 48 48 0 1 1 0-96"/></svg></span> <code>ICC 24.1</code> with <code>IMPI 21.12</code></label><label for="__tabbed_1_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M308.5 135.3c7.1-6.3 9.9-16.2 6.2-25-2.3-5.3-4.8-10.5-7.6-15.5l-3.1-5.4c-3-5-6.3-9.9-9.8-14.6-5.7-7.6-15.7-10.1-24.7-7.1L241.3 77c-10.7-8.8-23-16-36.2-20.9l-6.1-29c-1.9-9.3-9.1-16.7-18.5-17.8-6.6-.9-13.3-1.3-20.1-1.3h-.7q-10.2 0-20.1 1.2c-9.4 1.1-16.6 8.6-18.5 17.8L115 56.1c-13.3 5-25.5 12.1-36.2 20.9l-28.3-9.2c-9-3-19-.5-24.7 7.1-3.5 4.7-6.8 9.6-9.9 14.6l-3 5.3c-2.8 5-5.3 10.2-7.6 15.6-3.7 8.7-.9 18.6 6.2 25l22.2 19.8c-1.1 6.7-1.7 13.7-1.7 20.8s.6 14.1 1.7 20.9l-22.2 19.8c-7.1 6.3-9.9 16.2-6.2 25 2.3 5.3 4.8 10.5 7.6 15.6l3 5.2c3 5.1 6.3 9.9 9.9 14.6 5.7 7.6 15.7 10.1 24.7 7.1l28.2-9.3c10.7 8.8 23 16 36.2 20.9l6.1 29.1c1.9 9.3 9.1 16.7 18.5 17.8q10.05 1.2 20.4 1.2c10.35 0 13.7-.4 20.4-1.2 9.4-1.1 16.6-8.6 18.5-17.8l6.1-29.1c13.3-5 25.5-12.1 36.2-20.9l28.2 9.3c9 3 19 .5 24.7-7.1 3.5-4.7 6.8-9.5 9.8-14.6l3.1-5.4c2.8-5 5.3-10.2 7.6-15.5 3.7-8.7.9-18.6-6.2-25l-22.2-19.8c1.1-6.8 1.7-13.8 1.7-20.9s-.6-14.1-1.7-20.9l22.2-19.8zM112 176a48 48 0 1 1 96 0 48 48 0 1 1-96 0m392.7 324.5c6.3 7.1 16.2 9.9 25 6.2 5.3-2.3 10.5-4.8 15.5-7.6l5.4-3.1c5-3 9.9-6.3 14.6-9.8 7.6-5.7 10.1-15.7 7.1-24.7l-9.3-28.2c8.8-10.7 16-23 20.9-36.2L613 391c9.3-1.9 16.7-9.1 17.8-18.5q1.2-10.05 1.2-20.4c0-10.35-.4-13.7-1.2-20.4-1.1-9.4-8.6-16.6-17.8-18.5l-29.1-6.2c-5-13.3-12.1-25.5-20.9-36.2l9.3-28.2c3-9 .5-19-7.1-24.7-4.7-3.5-9.6-6.8-14.6-9.9l-5.3-3c-5-2.8-10.2-5.3-15.6-7.6-8.7-3.7-18.6-.9-25 6.2l-19.8 22.2c-6.8-1.1-13.8-1.7-20.9-1.7s-14.1.6-20.9 1.7l-19.8-22.2c-6.3-7.1-16.2-9.9-25-6.2-5.3 2.3-10.5 4.8-15.6 7.6l-5.2 3c-5.1 3-9.9 6.3-14.6 9.9-7.6 5.7-10.1 15.7-7.1 24.7l9.3 28.2c-8.8 10.7-16 23-20.9 36.2l-29.1 6c-9.3 1.9-16.7 9.1-17.8 18.5q-1.2 10.05-1.2 20.4c0 10.35.4 13.7 1.2 20.4 1.1 9.4 8.6 16.6 17.8 18.5l29.1 6.1c5 13.3 12.1 25.5 20.9 36.2l-9.3 28.2c-3 9-.5 19 7.1 24.7 4.7 3.5 9.5 6.8 14.6 9.8l5.4 3.1c5 2.8 10.2 5.3 15.5 7.6 8.7 3.7 18.6.9 25-6.2l19.8-22.2c6.8 1.1 13.8 1.7 20.9 1.7s14.1-.6 20.9-1.7l19.8 22.2zM464 304a48 48 0 1 1 0 96 48 48 0 1 1 0-96"/></svg></span> <code>GCC 11.2.0</code> with <code>MVAPICH2 2.3.7</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><div style="width:150px">Program</div></th>
+<th style="text-align: left;"><div style="width:240px">Command to Load</div></th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ICC 24.1</code></td>
+<td style="text-align: left;"><code>module load intel/24.1</code></td>
+<td style="text-align: left;"><code>ICC</code>, Intel® C++ Compiler Classic. <mark><strong>Loading it will also automatically load <code>GCC 13.2.0</code></strong></mark>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>IMPI 21.12</code></td>
+<td style="text-align: left;"><code>module load impi/21.12</code></td>
+<td style="text-align: left;"><code>IMPI</code>, Intel® MPI Library</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>SCOTCH 7.0.7</code></td>
+<td style="text-align: left;"><code>module load scotch/7.0.7-i32</code></td>
+<td style="text-align: left;"><code>SCOTCH</code> is a set of programs and libraries which implement the static mapping and sparse matrix reordering algorithms developed within the SCOTCH project.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>METIS 5.2.1.1</code></td>
+<td style="text-align: left;"><code>module load metis/5.2.1.1</code></td>
+<td style="text-align: left;"><code>METIS</code> is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>CMake 3.24.2</code></td>
+<td style="text-align: left;"><code>module load cmake/3.24.2</code></td>
+<td style="text-align: left;"><code>CMake</code> is a free, cross-platform, software development tool for building applications via compiler-independent instructions.</td>
+</tr>
+</tbody>
+</table>
+<p>Update the following configuration files to match the system's compiler and library settings:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">File</th>
+<th style="text-align: left;">Line No.</th>
+<th style="text-align: left;">From</th>
+<th style="text-align: left;">To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/etc/bashrc</code></td>
+<td style="text-align: left;"><code>71</code></td>
+<td style="text-align: left;"><code>export WM_COMPILER=Gcc</code></td>
+<td style="text-align: left;"><code>export WM_COMPILER=Icx</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/etc/bashrc</code></td>
+<td style="text-align: left;"><code>99</code></td>
+<td style="text-align: left;"><code>#export WM_COMPILE_CONTROL="+strict"</code></td>
+<td style="text-align: left;"><code>export WM_COMPILE_CONTROL="+openmp"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/etc/bashrc</code></td>
+<td style="text-align: left;"><code>106</code></td>
+<td style="text-align: left;"><code>export WM_MPLIB=SYSTEMOPENMPI</code></td>
+<td style="text-align: left;"><code>export WM_MPLIB=INTELMPI</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/etc/config.sh/scotch</code></td>
+<td style="text-align: left;"><code>38</code></td>
+<td style="text-align: left;"><code>SCOTCH_VERSION=scotch_6.1.0</code></td>
+<td style="text-align: left;"><code>SCOTCH_VERSION=scotch-system</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/etc/config.sh/metis</code></td>
+<td style="text-align: left;"><code>36</code></td>
+<td style="text-align: left;"><code>METIS_VERSION=metis-5.1.0</code></td>
+<td style="text-align: left;"><code>METIS_VERSION=metis-system</code></td>
+</tr>
+</tbody>
+</table>
+<p>Append the following lines to <code>$WM_PROJECT_DIR/etc/bashrc</code>:</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span>
+<span class="normal"><a href="#__codelineno-2-3">3</a></span>
+<span class="normal"><a href="#__codelineno-2-4">4</a></span>
+<span class="normal"><a href="#__codelineno-2-5">5</a></span>
+<span class="normal"><a href="#__codelineno-2-6">6</a></span>
+<span class="normal"><a href="#__codelineno-2-7">7</a></span>
+<span class="normal"><a href="#__codelineno-2-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1"># Load system compilers, libraries, and tools</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>module<span class="w"> </span>load<span class="w"> </span>intel/24.1
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a>module<span class="w"> </span>load<span class="w"> </span>impi/21.12
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a>module<span class="w"> </span>load<span class="w"> </span>scotch/7.0.7-i32
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a>module<span class="w"> </span>load<span class="w"> </span>metis/5.2.1.1
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a>module<span class="w"> </span>load<span class="w"> </span>cmake/3.24.2
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="nb">export</span><span class="w"> </span><span class="nv">LD_PRELOAD</span><span class="o">=</span><span class="s2">&quot;/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib/release/libmpi.so</span><span class="si">${</span><span class="nv">LD_PRELOAD</span><span class="p">:+:</span><span class="nv">$LD_PRELOAD</span><span class="si">}</span><span class="s2">&quot;</span>
+</span></code></pre></div></td></tr></table></div>
+<details class="example">
+<summary>Complete contents of the modified <code>$WM_PROJECT_DIR/etc/bashrc</code> file</summary>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">  1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">  2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">  3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">  4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">  5</a></span>
+<span class="normal"><a href="#__codelineno-3-6">  6</a></span>
+<span class="normal"><a href="#__codelineno-3-7">  7</a></span>
+<span class="normal"><a href="#__codelineno-3-8">  8</a></span>
+<span class="normal"><a href="#__codelineno-3-9">  9</a></span>
+<span class="normal"><a href="#__codelineno-3-10"> 10</a></span>
+<span class="normal"><a href="#__codelineno-3-11"> 11</a></span>
+<span class="normal"><a href="#__codelineno-3-12"> 12</a></span>
+<span class="normal"><a href="#__codelineno-3-13"> 13</a></span>
+<span class="normal"><a href="#__codelineno-3-14"> 14</a></span>
+<span class="normal"><a href="#__codelineno-3-15"> 15</a></span>
+<span class="normal"><a href="#__codelineno-3-16"> 16</a></span>
+<span class="normal"><a href="#__codelineno-3-17"> 17</a></span>
+<span class="normal"><a href="#__codelineno-3-18"> 18</a></span>
+<span class="normal"><a href="#__codelineno-3-19"> 19</a></span>
+<span class="normal"><a href="#__codelineno-3-20"> 20</a></span>
+<span class="normal"><a href="#__codelineno-3-21"> 21</a></span>
+<span class="normal"><a href="#__codelineno-3-22"> 22</a></span>
+<span class="normal"><a href="#__codelineno-3-23"> 23</a></span>
+<span class="normal"><a href="#__codelineno-3-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-3-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-3-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-3-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-3-28"> 28</a></span>
+<span class="normal"><a href="#__codelineno-3-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-3-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-3-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-3-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-3-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-3-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-3-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-3-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-3-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-3-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-3-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-3-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-3-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-3-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-3-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-3-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-3-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-3-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-3-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-3-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-3-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-3-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-3-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-3-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-3-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-3-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-3-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-3-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-3-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-3-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-3-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-3-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-3-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-3-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-3-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-3-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-3-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-3-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-3-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-3-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-3-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-3-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-3-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-3-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-3-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-3-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-3-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-3-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-3-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-3-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-3-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-3-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-3-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-3-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-3-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-3-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-3-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-3-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-3-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-3-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-3-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-3-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-3-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-3-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-3-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-3-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-3-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-3-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-3-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-3-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-3-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-3-100">100</a></span>
+<span class="normal"><a href="#__codelineno-3-101">101</a></span>
+<span class="normal"><a href="#__codelineno-3-102">102</a></span>
+<span class="normal"><a href="#__codelineno-3-103">103</a></span>
+<span class="normal"><a href="#__codelineno-3-104">104</a></span>
+<span class="normal"><a href="#__codelineno-3-105">105</a></span>
+<span class="normal"><a href="#__codelineno-3-106">106</a></span>
+<span class="normal"><a href="#__codelineno-3-107">107</a></span>
+<span class="normal"><a href="#__codelineno-3-108">108</a></span>
+<span class="normal"><a href="#__codelineno-3-109">109</a></span>
+<span class="normal"><a href="#__codelineno-3-110">110</a></span>
+<span class="normal"><a href="#__codelineno-3-111">111</a></span>
+<span class="normal"><a href="#__codelineno-3-112">112</a></span>
+<span class="normal"><a href="#__codelineno-3-113">113</a></span>
+<span class="normal"><a href="#__codelineno-3-114">114</a></span>
+<span class="normal"><a href="#__codelineno-3-115">115</a></span>
+<span class="normal"><a href="#__codelineno-3-116">116</a></span>
+<span class="normal"><a href="#__codelineno-3-117">117</a></span>
+<span class="normal"><a href="#__codelineno-3-118">118</a></span>
+<span class="normal"><a href="#__codelineno-3-119">119</a></span>
+<span class="normal"><a href="#__codelineno-3-120">120</a></span>
+<span class="normal"><a href="#__codelineno-3-121">121</a></span>
+<span class="normal"><a href="#__codelineno-3-122">122</a></span>
+<span class="normal"><a href="#__codelineno-3-123">123</a></span>
+<span class="normal"><a href="#__codelineno-3-124">124</a></span>
+<span class="normal"><a href="#__codelineno-3-125">125</a></span>
+<span class="normal"><a href="#__codelineno-3-126">126</a></span>
+<span class="normal"><a href="#__codelineno-3-127">127</a></span>
+<span class="normal"><a href="#__codelineno-3-128">128</a></span>
+<span class="normal"><a href="#__codelineno-3-129">129</a></span>
+<span class="normal"><a href="#__codelineno-3-130">130</a></span>
+<span class="normal"><a href="#__codelineno-3-131">131</a></span>
+<span class="normal"><a href="#__codelineno-3-132">132</a></span>
+<span class="normal"><a href="#__codelineno-3-133">133</a></span>
+<span class="normal"><a href="#__codelineno-3-134">134</a></span>
+<span class="normal"><a href="#__codelineno-3-135">135</a></span>
+<span class="normal"><a href="#__codelineno-3-136">136</a></span>
+<span class="normal"><a href="#__codelineno-3-137">137</a></span>
+<span class="normal"><a href="#__codelineno-3-138">138</a></span>
+<span class="normal"><a href="#__codelineno-3-139">139</a></span>
+<span class="normal"><a href="#__codelineno-3-140">140</a></span>
+<span class="normal"><a href="#__codelineno-3-141">141</a></span>
+<span class="normal"><a href="#__codelineno-3-142">142</a></span>
+<span class="normal"><a href="#__codelineno-3-143">143</a></span>
+<span class="normal"><a href="#__codelineno-3-144">144</a></span>
+<span class="normal"><a href="#__codelineno-3-145">145</a></span>
+<span class="normal"><a href="#__codelineno-3-146">146</a></span>
+<span class="normal"><a href="#__codelineno-3-147">147</a></span>
+<span class="normal"><a href="#__codelineno-3-148">148</a></span>
+<span class="normal"><a href="#__codelineno-3-149">149</a></span>
+<span class="normal"><a href="#__codelineno-3-150">150</a></span>
+<span class="normal"><a href="#__codelineno-3-151">151</a></span>
+<span class="normal"><a href="#__codelineno-3-152">152</a></span>
+<span class="normal"><a href="#__codelineno-3-153">153</a></span>
+<span class="normal"><a href="#__codelineno-3-154">154</a></span>
+<span class="normal"><a href="#__codelineno-3-155">155</a></span>
+<span class="normal"><a href="#__codelineno-3-156">156</a></span>
+<span class="normal"><a href="#__codelineno-3-157">157</a></span>
+<span class="normal"><a href="#__codelineno-3-158">158</a></span>
+<span class="normal"><a href="#__codelineno-3-159">159</a></span>
+<span class="normal"><a href="#__codelineno-3-160">160</a></span>
+<span class="normal"><a href="#__codelineno-3-161">161</a></span>
+<span class="normal"><a href="#__codelineno-3-162">162</a></span>
+<span class="normal"><a href="#__codelineno-3-163">163</a></span>
+<span class="normal"><a href="#__codelineno-3-164">164</a></span>
+<span class="normal"><a href="#__codelineno-3-165">165</a></span>
+<span class="normal"><a href="#__codelineno-3-166">166</a></span>
+<span class="normal"><a href="#__codelineno-3-167">167</a></span>
+<span class="normal"><a href="#__codelineno-3-168">168</a></span>
+<span class="normal"><a href="#__codelineno-3-169">169</a></span>
+<span class="normal"><a href="#__codelineno-3-170">170</a></span>
+<span class="normal"><a href="#__codelineno-3-171">171</a></span>
+<span class="normal"><a href="#__codelineno-3-172">172</a></span>
+<span class="normal"><a href="#__codelineno-3-173">173</a></span>
+<span class="normal"><a href="#__codelineno-3-174">174</a></span>
+<span class="normal"><a href="#__codelineno-3-175">175</a></span>
+<span class="normal"><a href="#__codelineno-3-176">176</a></span>
+<span class="normal"><a href="#__codelineno-3-177">177</a></span>
+<span class="normal"><a href="#__codelineno-3-178">178</a></span>
+<span class="normal"><a href="#__codelineno-3-179">179</a></span>
+<span class="normal"><a href="#__codelineno-3-180">180</a></span>
+<span class="normal"><a href="#__codelineno-3-181">181</a></span>
+<span class="normal"><a href="#__codelineno-3-182">182</a></span>
+<span class="normal"><a href="#__codelineno-3-183">183</a></span>
+<span class="normal"><a href="#__codelineno-3-184">184</a></span>
+<span class="normal"><a href="#__codelineno-3-185">185</a></span>
+<span class="normal"><a href="#__codelineno-3-186">186</a></span>
+<span class="normal"><a href="#__codelineno-3-187">187</a></span>
+<span class="normal"><a href="#__codelineno-3-188">188</a></span>
+<span class="normal"><a href="#__codelineno-3-189">189</a></span>
+<span class="normal"><a href="#__codelineno-3-190">190</a></span>
+<span class="normal"><a href="#__codelineno-3-191">191</a></span>
+<span class="normal"><a href="#__codelineno-3-192">192</a></span>
+<span class="normal"><a href="#__codelineno-3-193">193</a></span>
+<span class="normal"><a href="#__codelineno-3-194">194</a></span>
+<span class="normal"><a href="#__codelineno-3-195">195</a></span>
+<span class="normal"><a href="#__codelineno-3-196">196</a></span>
+<span class="normal"><a href="#__codelineno-3-197">197</a></span>
+<span class="normal"><a href="#__codelineno-3-198">198</a></span>
+<span class="normal"><a href="#__codelineno-3-199">199</a></span>
+<span class="normal"><a href="#__codelineno-3-200">200</a></span>
+<span class="normal"><a href="#__codelineno-3-201">201</a></span>
+<span class="normal"><a href="#__codelineno-3-202">202</a></span>
+<span class="normal"><a href="#__codelineno-3-203">203</a></span>
+<span class="normal"><a href="#__codelineno-3-204">204</a></span>
+<span class="normal"><a href="#__codelineno-3-205">205</a></span>
+<span class="normal"><a href="#__codelineno-3-206">206</a></span>
+<span class="normal"><a href="#__codelineno-3-207">207</a></span>
+<span class="normal"><a href="#__codelineno-3-208">208</a></span>
+<span class="normal"><a href="#__codelineno-3-209">209</a></span>
+<span class="normal"><a href="#__codelineno-3-210">210</a></span>
+<span class="normal"><a href="#__codelineno-3-211">211</a></span>
+<span class="normal"><a href="#__codelineno-3-212">212</a></span>
+<span class="normal"><a href="#__codelineno-3-213">213</a></span>
+<span class="normal"><a href="#__codelineno-3-214">214</a></span>
+<span class="normal"><a href="#__codelineno-3-215">215</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">#----------------------------------*-sh-*--------------------------------------</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="c1"># =========                 |</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="c1"># \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="c1">#  \\    /   O peration     |</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="c1">#   \\  /    A nd           | www.openfoam.com</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="c1">#    \\/     M anipulation  |</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="c1">#     Copyright (C) 2011-2016 OpenFOAM Foundation</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="c1">#     Copyright (C) 2016-2023 OpenCFD Ltd.</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="c1"># License</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="c1">#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="c1">#</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="c1"># File</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="c1">#     etc/bashrc</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="c1">#</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="c1"># Description</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="c1">#     The OpenFOAM environment for POSIX shell (eg, bash,dash,zsh,...).</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="c1">#     Source manually or from the ~/.bashrc or ~/.profile files.</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="c1">#</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="c1">#     Most settings can be overridden with a &lt;prefs.sh&gt; file:</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22"></a><span class="c1">#</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23"></a><span class="c1">#       - Base values (eg, from system admin):</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24"></a><span class="c1">#         -  $WM_PROJECT_DIR/etc/prefs.sh</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25"></a><span class="c1">#</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26"></a><span class="c1">#       - User or group values (first file found):</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27"></a><span class="c1">#         -  ~/.OpenFOAM/$FOAM_API/prefs.sh</span>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28"></a><span class="c1">#         -  ~/.OpenFOAM/prefs.sh</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29"></a><span class="c1">#         -  $WM_PROJECT_SITE/$FOAM_API/etc/prefs.sh</span>
+</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30"></a><span class="c1">#         -  $WM_PROJECT_SITE/etc/prefs.sh</span>
+</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31"></a><span class="c1">#</span>
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32"></a><span class="c1">#     Some settings can also be overridden on the command-line when</span>
+</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33"></a><span class="c1">#     sourcing this file. For example,</span>
+</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34"></a><span class="c1">#</span>
+</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35"></a><span class="c1">#       . /path/etc/bashrc WM_COMPILER=Clang WM_LABEL_SIZE=64</span>
+</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36"></a><span class="c1">#</span>
+</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37"></a><span class="c1"># Environment</span>
+</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38"></a><span class="c1">#     FOAM_CONFIG_ETC</span>
+</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39"></a><span class="c1">#     - alternative/additional location for OpenFOAM etc/ directory</span>
+</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40"></a><span class="c1">#</span>
+</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41"></a><span class="c1">#     FOAM_CONFIG_MODE (search mode for etc config files - see foamEtcFile)</span>
+</span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42"></a><span class="c1">#         - eg, FOAM_CONFIG_MODE=&quot;o&quot; to only use OpenFOAM config files</span>
+</span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43"></a><span class="c1">#         - no influence on OpenFOAM applications, just the config files</span>
+</span><span id="__span-3-44"><a id="__codelineno-3-44" name="__codelineno-3-44"></a><span class="c1">#</span>
+</span><span id="__span-3-45"><a id="__codelineno-3-45" name="__codelineno-3-45"></a><span class="c1">#     FOAM_VERBOSE (set/unset)</span>
+</span><span id="__span-3-46"><a id="__codelineno-3-46" name="__codelineno-3-46"></a><span class="c1">#         - add extra verbosity when sourcing files</span>
+</span><span id="__span-3-47"><a id="__codelineno-3-47" name="__codelineno-3-47"></a><span class="c1">#</span>
+</span><span id="__span-3-48"><a id="__codelineno-3-48" name="__codelineno-3-48"></a><span class="c1">#     WM_PROJECT_SITE (optional directory)</span>
+</span><span id="__span-3-49"><a id="__codelineno-3-49" name="__codelineno-3-49"></a><span class="c1">#         - local site-specific directory, uses WM_PROJECT_DIR/site if unset</span>
+</span><span id="__span-3-50"><a id="__codelineno-3-50" name="__codelineno-3-50"></a><span class="c1">#</span>
+</span><span id="__span-3-51"><a id="__codelineno-3-51" name="__codelineno-3-51"></a><span class="c1"># Note</span>
+</span><span id="__span-3-52"><a id="__codelineno-3-52" name="__codelineno-3-52"></a><span class="c1">#     Changes made to this file will be lost with the next upgrade.</span>
+</span><span id="__span-3-53"><a id="__codelineno-3-53" name="__codelineno-3-53"></a><span class="c1">#</span>
+</span><span id="__span-3-54"><a id="__codelineno-3-54" name="__codelineno-3-54"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span><span id="__span-3-55"><a id="__codelineno-3-55" name="__codelineno-3-55"></a>
+</span><span id="__span-3-56"><a id="__codelineno-3-56" name="__codelineno-3-56"></a><span class="c1"># [WM_PROJECT_VERSION] - A human-readable version name</span>
+</span><span id="__span-3-57"><a id="__codelineno-3-57" name="__codelineno-3-57"></a><span class="c1"># A development version is often named &#39;com&#39; - as in www.openfoam.com</span>
+</span><span id="__span-3-58"><a id="__codelineno-3-58" name="__codelineno-3-58"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_PROJECT_VERSION</span><span class="o">=</span>v2312
+</span><span id="__span-3-59"><a id="__codelineno-3-59" name="__codelineno-3-59"></a>
+</span><span id="__span-3-60"><a id="__codelineno-3-60" name="__codelineno-3-60"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span><span id="__span-3-61"><a id="__codelineno-3-61" name="__codelineno-3-61"></a><span class="c1"># Configuration environment variables.</span>
+</span><span id="__span-3-62"><a id="__codelineno-3-62" name="__codelineno-3-62"></a><span class="c1"># Override with &lt;prefs.sh&gt; instead of editing here.</span>
+</span><span id="__span-3-63"><a id="__codelineno-3-63" name="__codelineno-3-63"></a>
+</span><span id="__span-3-64"><a id="__codelineno-3-64" name="__codelineno-3-64"></a><span class="c1"># [WM_COMPILER_TYPE] - Compiler location:</span>
+</span><span id="__span-3-65"><a id="__codelineno-3-65" name="__codelineno-3-65"></a><span class="c1"># = system | ThirdParty</span>
+</span><span id="__span-3-66"><a id="__codelineno-3-66" name="__codelineno-3-66"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_COMPILER_TYPE</span><span class="o">=</span>system
+</span><span id="__span-3-67"><a id="__codelineno-3-67" name="__codelineno-3-67"></a>
+</span><span id="__span-3-68"><a id="__codelineno-3-68" name="__codelineno-3-68"></a><span class="c1"># [WM_COMPILER] - Compiler:</span>
+</span><span id="__span-3-69"><a id="__codelineno-3-69" name="__codelineno-3-69"></a><span class="c1"># = Gcc | Clang | Icc | Icx | Amd | Arm | Cray | Fujitsu | Nvidia |</span>
+</span><span id="__span-3-70"><a id="__codelineno-3-70" name="__codelineno-3-70"></a><span class="c1">#   Gcc&lt;digits&gt; | Clang&lt;digits&gt;</span>
+</span><span id="__span-3-71"><a id="__codelineno-3-71" name="__codelineno-3-71"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_COMPILER</span><span class="o">=</span>Icx
+</span><span id="__span-3-72"><a id="__codelineno-3-72" name="__codelineno-3-72"></a>
+</span><span id="__span-3-73"><a id="__codelineno-3-73" name="__codelineno-3-73"></a><span class="c1"># [WM_PRECISION_OPTION] - Floating-point precision:</span>
+</span><span id="__span-3-74"><a id="__codelineno-3-74" name="__codelineno-3-74"></a><span class="c1"># = DP | SP | SPDP</span>
+</span><span id="__span-3-75"><a id="__codelineno-3-75" name="__codelineno-3-75"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_PRECISION_OPTION</span><span class="o">=</span>DP
+</span><span id="__span-3-76"><a id="__codelineno-3-76" name="__codelineno-3-76"></a>
+</span><span id="__span-3-77"><a id="__codelineno-3-77" name="__codelineno-3-77"></a><span class="c1"># [WM_LABEL_SIZE] - Label size in bits:</span>
+</span><span id="__span-3-78"><a id="__codelineno-3-78" name="__codelineno-3-78"></a><span class="c1"># = 32 | 64</span>
+</span><span id="__span-3-79"><a id="__codelineno-3-79" name="__codelineno-3-79"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_LABEL_SIZE</span><span class="o">=</span><span class="m">32</span>
+</span><span id="__span-3-80"><a id="__codelineno-3-80" name="__codelineno-3-80"></a>
+</span><span id="__span-3-81"><a id="__codelineno-3-81" name="__codelineno-3-81"></a><span class="c1"># [WM_COMPILE_OPTION] - Optimised(default), debug, profiling, other:</span>
+</span><span id="__span-3-82"><a id="__codelineno-3-82" name="__codelineno-3-82"></a><span class="c1"># = Opt | Dbg | Debug | Prof</span>
+</span><span id="__span-3-83"><a id="__codelineno-3-83" name="__codelineno-3-83"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_COMPILE_OPTION</span><span class="o">=</span>Opt
+</span><span id="__span-3-84"><a id="__codelineno-3-84" name="__codelineno-3-84"></a>
+</span><span id="__span-3-85"><a id="__codelineno-3-85" name="__codelineno-3-85"></a><span class="c1"># [WM_COMPILE_CONTROL] - additional control for compilation/linking</span>
+</span><span id="__span-3-86"><a id="__codelineno-3-86" name="__codelineno-3-86"></a><span class="c1">#   +gold   : use gold linker</span>
+</span><span id="__span-3-87"><a id="__codelineno-3-87" name="__codelineno-3-87"></a><span class="c1">#   +link-ld: use   ld linker [clang]</span>
+</span><span id="__span-3-88"><a id="__codelineno-3-88" name="__codelineno-3-88"></a><span class="c1">#   +lld    : use  lld linker [clang]</span>
+</span><span id="__span-3-89"><a id="__codelineno-3-89" name="__codelineno-3-89"></a><span class="c1">#   +mold   : use mold linker [clang]</span>
+</span><span id="__span-3-90"><a id="__codelineno-3-90" name="__codelineno-3-90"></a><span class="c1">#   ~libz   : without libz compression</span>
+</span><span id="__span-3-91"><a id="__codelineno-3-91" name="__codelineno-3-91"></a><span class="c1">#   ~rpath  : without rpath handling [MacOS]</span>
+</span><span id="__span-3-92"><a id="__codelineno-3-92" name="__codelineno-3-92"></a><span class="c1">#   +openmp : with openmp</span>
+</span><span id="__span-3-93"><a id="__codelineno-3-93" name="__codelineno-3-93"></a><span class="c1">#   ~openmp : without openmp</span>
+</span><span id="__span-3-94"><a id="__codelineno-3-94" name="__codelineno-3-94"></a><span class="c1">#   +ccache : use ccache</span>
+</span><span id="__span-3-95"><a id="__codelineno-3-95" name="__codelineno-3-95"></a><span class="c1">#   +xcrun  : use xcrun and native compilers [MacOS]</span>
+</span><span id="__span-3-96"><a id="__codelineno-3-96" name="__codelineno-3-96"></a><span class="c1">#   +strict : more deprecation warnings (may generate *many* warnings)</span>
+</span><span id="__span-3-97"><a id="__codelineno-3-97" name="__codelineno-3-97"></a><span class="c1">#   ccache=... : ccache command (unquoted, single/double or &lt;&gt; quoted)</span>
+</span><span id="__span-3-98"><a id="__codelineno-3-98" name="__codelineno-3-98"></a><span class="c1">#   version=... : compiler suffix (eg, version=11 -&gt; gcc-11)</span>
+</span><span id="__span-3-99"><a id="__codelineno-3-99" name="__codelineno-3-99"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_COMPILE_CONTROL</span><span class="o">=</span><span class="s2">&quot;+openmp&quot;</span>
+</span><span id="__span-3-100"><a id="__codelineno-3-100" name="__codelineno-3-100"></a>
+</span><span id="__span-3-101"><a id="__codelineno-3-101" name="__codelineno-3-101"></a><span class="c1"># [WM_MPLIB] - MPI implementation:</span>
+</span><span id="__span-3-102"><a id="__codelineno-3-102" name="__codelineno-3-102"></a><span class="c1"># = SYSTEMOPENMPI | OPENMPI | SYSTEMMPI | MPI | MPICH | MPICH-GM |</span>
+</span><span id="__span-3-103"><a id="__codelineno-3-103" name="__codelineno-3-103"></a><span class="c1">#   HPMPI | CRAY-MPICH | FJMPI | QSMPI | SGIMPI | INTELMPI | USERMPI</span>
+</span><span id="__span-3-104"><a id="__codelineno-3-104" name="__codelineno-3-104"></a><span class="c1"># Specify SYSTEMOPENMPI1, SYSTEMOPENMPI2 for internal tracking (if desired)</span>
+</span><span id="__span-3-105"><a id="__codelineno-3-105" name="__codelineno-3-105"></a><span class="c1"># Can also use INTELMPI-xyz etc and define your own wmake rule</span>
+</span><span id="__span-3-106"><a id="__codelineno-3-106" name="__codelineno-3-106"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_MPLIB</span><span class="o">=</span>INTELMPI
+</span><span id="__span-3-107"><a id="__codelineno-3-107" name="__codelineno-3-107"></a>
+</span><span id="__span-3-108"><a id="__codelineno-3-108" name="__codelineno-3-108"></a>
+</span><span id="__span-3-109"><a id="__codelineno-3-109" name="__codelineno-3-109"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span><span id="__span-3-110"><a id="__codelineno-3-110" name="__codelineno-3-110"></a><span class="c1"># (advanced / legacy)</span>
+</span><span id="__span-3-111"><a id="__codelineno-3-111" name="__codelineno-3-111"></a>
+</span><span id="__span-3-112"><a id="__codelineno-3-112" name="__codelineno-3-112"></a><span class="c1"># [WM_PROJECT] - This project is &quot;OpenFOAM&quot; - do not change</span>
+</span><span id="__span-3-113"><a id="__codelineno-3-113" name="__codelineno-3-113"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_PROJECT</span><span class="o">=</span>OpenFOAM
+</span><span id="__span-3-114"><a id="__codelineno-3-114" name="__codelineno-3-114"></a>
+</span><span id="__span-3-115"><a id="__codelineno-3-115" name="__codelineno-3-115"></a><span class="c1"># [projectDir] - directory containing this OpenFOAM version.</span>
+</span><span id="__span-3-116"><a id="__codelineno-3-116" name="__codelineno-3-116"></a><span class="c1"># \- When this file is located as $WM_PROJECT_DIR/etc/bashrc, the next lines</span>
+</span><span id="__span-3-117"><a id="__codelineno-3-117" name="__codelineno-3-117"></a><span class="c1">#    should work when sourced by BASH or ZSH shells. If this however fails,</span>
+</span><span id="__span-3-118"><a id="__codelineno-3-118" name="__codelineno-3-118"></a><span class="c1">#    set one of the fallback values to an appropriate path.</span>
+</span><span id="__span-3-119"><a id="__codelineno-3-119" name="__codelineno-3-119"></a><span class="c1">#</span>
+</span><span id="__span-3-120"><a id="__codelineno-3-120" name="__codelineno-3-120"></a><span class="c1">#    This can be removed if an absolute path is provided for WM_PROJECT_DIR</span>
+</span><span id="__span-3-121"><a id="__codelineno-3-121" name="__codelineno-3-121"></a><span class="c1">#    later on in this file</span>
+</span><span id="__span-3-122"><a id="__codelineno-3-122" name="__codelineno-3-122"></a><span class="c1"># --</span>
+</span><span id="__span-3-123"><a id="__codelineno-3-123" name="__codelineno-3-123"></a><span class="nv">projectDir</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BASH_SOURCE</span><span class="k">:-</span><span class="si">${</span><span class="nv">ZSH_NAME</span><span class="p">:+</span><span class="nv">$0</span><span class="si">}}</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span id="__span-3-124"><a id="__codelineno-3-124" name="__codelineno-3-124"></a><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$projectDir</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">projectDir</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span><span class="se">\c</span>d<span class="w"> </span><span class="k">$(</span>dirname<span class="w"> </span><span class="nv">$projectDir</span><span class="k">)</span>/..<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\p</span>wd<span class="w"> </span>-L<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">||</span><span class="se">\</span>
+</span><span id="__span-3-125"><a id="__codelineno-3-125" name="__codelineno-3-125"></a><span class="nv">projectDir</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$WORK</span><span class="s2">/OpenFOAM/OpenFOAM-</span><span class="nv">$WM_PROJECT_VERSION</span><span class="s2">&quot;</span>
+</span><span id="__span-3-126"><a id="__codelineno-3-126" name="__codelineno-3-126"></a><span class="c1"># projectDir=&quot;/opt/openfoam/OpenFOAM-$WM_PROJECT_VERSION&quot;</span>
+</span><span id="__span-3-127"><a id="__codelineno-3-127" name="__codelineno-3-127"></a><span class="c1"># projectDir=&quot;/usr/local/OpenFOAM/OpenFOAM-$WM_PROJECT_VERSION&quot;</span>
+</span><span id="__span-3-128"><a id="__codelineno-3-128" name="__codelineno-3-128"></a><span class="c1">################################################################################</span>
+</span><span id="__span-3-129"><a id="__codelineno-3-129" name="__codelineno-3-129"></a><span class="c1"># Or optionally hard-coded (eg, with autoconfig)</span>
+</span><span id="__span-3-130"><a id="__codelineno-3-130" name="__codelineno-3-130"></a><span class="c1"># projectDir=&quot;@PROJECT_DIR@&quot;</span>
+</span><span id="__span-3-131"><a id="__codelineno-3-131" name="__codelineno-3-131"></a>:<span class="w"> </span><span class="c1"># Safety statement (if the user removed all fallback values)</span>
+</span><span id="__span-3-132"><a id="__codelineno-3-132" name="__codelineno-3-132"></a>
+</span><span id="__span-3-133"><a id="__codelineno-3-133" name="__codelineno-3-133"></a><span class="c1"># [FOAM_SIGFPE] - Trap floating-point exceptions.</span>
+</span><span id="__span-3-134"><a id="__codelineno-3-134" name="__codelineno-3-134"></a><span class="c1">#               - overrides the &#39;trapFpe&#39; controlDict entry</span>
+</span><span id="__span-3-135"><a id="__codelineno-3-135" name="__codelineno-3-135"></a><span class="c1"># = true | false</span>
+</span><span id="__span-3-136"><a id="__codelineno-3-136" name="__codelineno-3-136"></a><span class="c1">#export FOAM_SIGFPE=true</span>
+</span><span id="__span-3-137"><a id="__codelineno-3-137" name="__codelineno-3-137"></a>
+</span><span id="__span-3-138"><a id="__codelineno-3-138" name="__codelineno-3-138"></a><span class="c1"># [FOAM_SETNAN] - Initialize memory with NaN</span>
+</span><span id="__span-3-139"><a id="__codelineno-3-139" name="__codelineno-3-139"></a><span class="c1">#               - overrides the &#39;setNaN&#39; controlDict entry</span>
+</span><span id="__span-3-140"><a id="__codelineno-3-140" name="__codelineno-3-140"></a><span class="c1"># = true | false</span>
+</span><span id="__span-3-141"><a id="__codelineno-3-141" name="__codelineno-3-141"></a><span class="c1">#export FOAM_SETNAN=false</span>
+</span><span id="__span-3-142"><a id="__codelineno-3-142" name="__codelineno-3-142"></a>
+</span><span id="__span-3-143"><a id="__codelineno-3-143" name="__codelineno-3-143"></a><span class="c1"># [FOAM_ABORT] - Treat exit() on FatalError as abort()</span>
+</span><span id="__span-3-144"><a id="__codelineno-3-144" name="__codelineno-3-144"></a><span class="c1"># = true | false</span>
+</span><span id="__span-3-145"><a id="__codelineno-3-145" name="__codelineno-3-145"></a><span class="c1">#export FOAM_ABORT=false</span>
+</span><span id="__span-3-146"><a id="__codelineno-3-146" name="__codelineno-3-146"></a>
+</span><span id="__span-3-147"><a id="__codelineno-3-147" name="__codelineno-3-147"></a><span class="c1"># [FOAM_CODE_TEMPLATES] - dynamicCode templates</span>
+</span><span id="__span-3-148"><a id="__codelineno-3-148" name="__codelineno-3-148"></a><span class="c1"># - unset: uses &#39;foamEtcFile -list codeTemplates/dynamicCode&#39;</span>
+</span><span id="__span-3-149"><a id="__codelineno-3-149" name="__codelineno-3-149"></a><span class="c1">##export FOAM_CODE_TEMPLATES=&quot;$WM_PROJECT_DIR/etc/codeTemplates/dynamicCode&quot;</span>
+</span><span id="__span-3-150"><a id="__codelineno-3-150" name="__codelineno-3-150"></a>
+</span><span id="__span-3-151"><a id="__codelineno-3-151" name="__codelineno-3-151"></a><span class="c1"># [FOAM_JOB_DIR] - location of jobControl</span>
+</span><span id="__span-3-152"><a id="__codelineno-3-152" name="__codelineno-3-152"></a><span class="c1">#                - unset: equivalent to ~/.OpenFOAM/jobControl</span>
+</span><span id="__span-3-153"><a id="__codelineno-3-153" name="__codelineno-3-153"></a><span class="c1"># export FOAM_JOB_DIR=&quot;$HOME/.OpenFOAM/jobControl&quot;</span>
+</span><span id="__span-3-154"><a id="__codelineno-3-154" name="__codelineno-3-154"></a>
+</span><span id="__span-3-155"><a id="__codelineno-3-155" name="__codelineno-3-155"></a><span class="c1"># [WM_OSTYPE] - Operating System Type (set automatically)</span>
+</span><span id="__span-3-156"><a id="__codelineno-3-156" name="__codelineno-3-156"></a><span class="c1"># = POSIX | MSwindows</span>
+</span><span id="__span-3-157"><a id="__codelineno-3-157" name="__codelineno-3-157"></a><span class="c1">#export WM_OSTYPE=POSIX</span>
+</span><span id="__span-3-158"><a id="__codelineno-3-158" name="__codelineno-3-158"></a>
+</span><span id="__span-3-159"><a id="__codelineno-3-159" name="__codelineno-3-159"></a><span class="c1"># [WM_ARCH_OPTION] - compiling with -m32 option on 64-bit system</span>
+</span><span id="__span-3-160"><a id="__codelineno-3-160" name="__codelineno-3-160"></a><span class="c1"># = 32 | 64</span>
+</span><span id="__span-3-161"><a id="__codelineno-3-161" name="__codelineno-3-161"></a><span class="c1">#   * on a 64-bit OS this can be 32 or 64</span>
+</span><span id="__span-3-162"><a id="__codelineno-3-162" name="__codelineno-3-162"></a><span class="c1">#   * on a 32-bit OS this option is ignored (always 32-bit)</span>
+</span><span id="__span-3-163"><a id="__codelineno-3-163" name="__codelineno-3-163"></a><span class="c1">#export WM_ARCH_OPTION=64</span>
+</span><span id="__span-3-164"><a id="__codelineno-3-164" name="__codelineno-3-164"></a>
+</span><span id="__span-3-165"><a id="__codelineno-3-165" name="__codelineno-3-165"></a><span class="c1"># [FOAM_EXTRA_CFLAGS, FOAM_EXTRA_CXXFLAGS, FOAM_EXTRA_LDFLAGS]</span>
+</span><span id="__span-3-166"><a id="__codelineno-3-166" name="__codelineno-3-166"></a><span class="c1"># Additional compilation flags - do not inherit from the environment.</span>
+</span><span id="__span-3-167"><a id="__codelineno-3-167" name="__codelineno-3-167"></a><span class="c1"># Set after sourcing or via &lt;prefs.sh&gt; to avoid surprises.</span>
+</span><span id="__span-3-168"><a id="__codelineno-3-168" name="__codelineno-3-168"></a><span class="nb">unset</span><span class="w"> </span>FOAM_EXTRA_CFLAGS<span class="w"> </span>FOAM_EXTRA_CXXFLAGS<span class="w"> </span>FOAM_EXTRA_LDFLAGS
+</span><span id="__span-3-169"><a id="__codelineno-3-169" name="__codelineno-3-169"></a>
+</span><span id="__span-3-170"><a id="__codelineno-3-170" name="__codelineno-3-170"></a><span class="c1">################################################################################</span>
+</span><span id="__span-3-171"><a id="__codelineno-3-171" name="__codelineno-3-171"></a><span class="c1"># NO (NORMAL) USER EDITING BELOW HERE</span>
+</span><span id="__span-3-172"><a id="__codelineno-3-172" name="__codelineno-3-172"></a>
+</span><span id="__span-3-173"><a id="__codelineno-3-173" name="__codelineno-3-173"></a><span class="c1"># Capture values of old directories to be cleaned from PATH, LD_LIBRARY_PATH</span>
+</span><span id="__span-3-174"><a id="__codelineno-3-174" name="__codelineno-3-174"></a><span class="nv">foamOldDirs</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$WM_PROJECT_DIR</span><span class="s2"> </span><span class="nv">$WM_THIRD_PARTY_DIR</span><span class="s2"> \</span>
+</span><span id="__span-3-175"><a id="__codelineno-3-175" name="__codelineno-3-175"></a><span class="s2">    </span><span class="nv">$WORK</span><span class="s2">/</span><span class="nv">$WM_PROJECT</span><span class="s2">/</span><span class="si">${</span><span class="nv">USER</span><span class="k">:-</span><span class="nv">user</span><span class="si">}</span><span class="s2"> </span><span class="nv">$FOAM_USER_APPBIN</span><span class="s2"> </span><span class="nv">$FOAM_USER_LIBBIN</span><span class="s2"> \</span>
+</span><span id="__span-3-176"><a id="__codelineno-3-176" name="__codelineno-3-176"></a><span class="s2">    </span><span class="nv">$WM_PROJECT_SITE</span><span class="s2"> </span><span class="nv">$FOAM_SITE_APPBIN</span><span class="s2"> </span><span class="nv">$FOAM_SITE_LIBBIN</span><span class="s2"> \</span>
+</span><span id="__span-3-177"><a id="__codelineno-3-177" name="__codelineno-3-177"></a><span class="s2">    </span><span class="nv">$FOAM_MODULE_APPBIN</span><span class="s2"> </span><span class="nv">$FOAM_MODULE_LIBBIN</span><span class="s2">&quot;</span>
+</span><span id="__span-3-178"><a id="__codelineno-3-178" name="__codelineno-3-178"></a>
+</span><span id="__span-3-179"><a id="__codelineno-3-179" name="__codelineno-3-179"></a><span class="c1"># [WM_PROJECT_DIR] - Location of this OpenFOAM version</span>
+</span><span id="__span-3-180"><a id="__codelineno-3-180" name="__codelineno-3-180"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_PROJECT_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$projectDir</span><span class="s2">&quot;</span>
+</span><span id="__span-3-181"><a id="__codelineno-3-181" name="__codelineno-3-181"></a>
+</span><span id="__span-3-182"><a id="__codelineno-3-182" name="__codelineno-3-182"></a><span class="c1"># [WM_PROJECT_USER_DIR] - Location of user files</span>
+</span><span id="__span-3-183"><a id="__codelineno-3-183" name="__codelineno-3-183"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_PROJECT_USER_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$WORK</span><span class="s2">/</span><span class="nv">$WM_PROJECT</span><span class="s2">/</span><span class="si">${</span><span class="nv">USER</span><span class="k">:-</span><span class="nv">user</span><span class="si">}</span><span class="s2">-</span><span class="nv">$WM_PROJECT_VERSION</span><span class="s2">&quot;</span>
+</span><span id="__span-3-184"><a id="__codelineno-3-184" name="__codelineno-3-184"></a>
+</span><span id="__span-3-185"><a id="__codelineno-3-185" name="__codelineno-3-185"></a><span class="c1"># [WM_PROJECT_SITE] - Location of site-specific (group) files</span>
+</span><span id="__span-3-186"><a id="__codelineno-3-186" name="__codelineno-3-186"></a><span class="c1"># Default (unset) implies WM_PROJECT_DIR/site</span>
+</span><span id="__span-3-187"><a id="__codelineno-3-187" name="__codelineno-3-187"></a><span class="c1"># Normally defined in calling environment</span>
+</span><span id="__span-3-188"><a id="__codelineno-3-188" name="__codelineno-3-188"></a>
+</span><span id="__span-3-189"><a id="__codelineno-3-189" name="__codelineno-3-189"></a>
+</span><span id="__span-3-190"><a id="__codelineno-3-190" name="__codelineno-3-190"></a><span class="c1"># Finalize setup of OpenFOAM environment</span>
+</span><span id="__span-3-191"><a id="__codelineno-3-191" name="__codelineno-3-191"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$WM_PROJECT_DIR</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span>
+</span><span id="__span-3-192"><a id="__codelineno-3-192" name="__codelineno-3-192"></a><span class="k">then</span>
+</span><span id="__span-3-193"><a id="__codelineno-3-193" name="__codelineno-3-193"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$FOAM_VERBOSE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PS1</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span>
+</span><span id="__span-3-194"><a id="__codelineno-3-194" name="__codelineno-3-194"></a><span class="w">    </span><span class="k">then</span>
+</span><span id="__span-3-195"><a id="__codelineno-3-195" name="__codelineno-3-195"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;source </span><span class="nv">$WM_PROJECT_DIR</span><span class="s2">/etc/config.sh/setup&quot;</span><span class="w"> </span><span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+</span><span id="__span-3-196"><a id="__codelineno-3-196" name="__codelineno-3-196"></a><span class="w">    </span><span class="k">fi</span>
+</span><span id="__span-3-197"><a id="__codelineno-3-197" name="__codelineno-3-197"></a><span class="w">    </span>.<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$WM_PROJECT_DIR</span><span class="s2">/etc/config.sh/setup&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</span><span id="__span-3-198"><a id="__codelineno-3-198" name="__codelineno-3-198"></a><span class="k">else</span>
+</span><span id="__span-3-199"><a id="__codelineno-3-199" name="__codelineno-3-199"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Error: did not locate installation path for </span><span class="nv">$WM_PROJECT</span><span class="s2">-</span><span class="nv">$WM_PROJECT_VERSION</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+</span><span id="__span-3-200"><a id="__codelineno-3-200" name="__codelineno-3-200"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;No directory: </span><span class="nv">$WM_PROJECT_DIR</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+</span><span id="__span-3-201"><a id="__codelineno-3-201" name="__codelineno-3-201"></a><span class="k">fi</span>
+</span><span id="__span-3-202"><a id="__codelineno-3-202" name="__codelineno-3-202"></a>
+</span><span id="__span-3-203"><a id="__codelineno-3-203" name="__codelineno-3-203"></a><span class="c1"># Cleanup variables (done as final statement for a clean exit code)</span>
+</span><span id="__span-3-204"><a id="__codelineno-3-204" name="__codelineno-3-204"></a><span class="nb">unset</span><span class="w"> </span>foamOldDirs<span class="w"> </span>projectDir
+</span><span id="__span-3-205"><a id="__codelineno-3-205" name="__codelineno-3-205"></a>
+</span><span id="__span-3-206"><a id="__codelineno-3-206" name="__codelineno-3-206"></a><span class="c1"># Load system compilers, libraries, and tools</span>
+</span><span id="__span-3-207"><a id="__codelineno-3-207" name="__codelineno-3-207"></a>module<span class="w"> </span>load<span class="w"> </span>intel/24.1
+</span><span id="__span-3-208"><a id="__codelineno-3-208" name="__codelineno-3-208"></a>module<span class="w"> </span>load<span class="w"> </span>impi/21.12
+</span><span id="__span-3-209"><a id="__codelineno-3-209" name="__codelineno-3-209"></a>module<span class="w"> </span>load<span class="w"> </span>scotch/7.0.7-i32
+</span><span id="__span-3-210"><a id="__codelineno-3-210" name="__codelineno-3-210"></a>module<span class="w"> </span>load<span class="w"> </span>metis/5.2.1.1
+</span><span id="__span-3-211"><a id="__codelineno-3-211" name="__codelineno-3-211"></a>module<span class="w"> </span>load<span class="w"> </span>cmake/3.24.2
+</span><span id="__span-3-212"><a id="__codelineno-3-212" name="__codelineno-3-212"></a>
+</span><span id="__span-3-213"><a id="__codelineno-3-213" name="__codelineno-3-213"></a><span class="nb">export</span><span class="w"> </span><span class="nv">LD_PRELOAD</span><span class="o">=</span><span class="s2">&quot;/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib/release/libmpi.so</span><span class="si">${</span><span class="nv">LD_PRELOAD</span><span class="p">:+:</span><span class="nv">$LD_PRELOAD</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-3-214"><a id="__codelineno-3-214" name="__codelineno-3-214"></a>
+</span><span id="__span-3-215"><a id="__codelineno-3-215" name="__codelineno-3-215"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span></code></pre></div></td></tr></table></div>
+</details>
+</div>
+<div class="tabbed-block">
+<div class="admonition failure">
+<p>This configuration compiles successfully, but the resulting applications encounter a <code>Segmentation fault (core dumped)</code> at runtime.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><div style="width:150px">Program</div></th>
+<th style="text-align: left;"><div style="width:240px">Command to Load</div></th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>GCC 11.2.0</code></td>
+<td style="text-align: left;"><code>module load gcc/11.2.0</code></td>
+<td style="text-align: left;"><code>GCC</code>, the GNU Compiler Collection</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>MVAPICH2 2.3.7</code></td>
+<td style="text-align: left;"><code>module load mvapich2/2.3.7</code></td>
+<td style="text-align: left;">A BSD-licensed implementation of the MPI standard developed by Ohio State University.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>SCOTCH 7.0.7</code></td>
+<td style="text-align: left;"><code>module load scotch/7.0.7-i32</code></td>
+<td style="text-align: left;"><code>SCOTCH</code> is a set of programs and libraries which implement the static mapping and sparse matrix reordering algorithms developed within the SCOTCH project.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>METIS 5.2.1.1</code></td>
+<td style="text-align: left;"><code>module load metis/5.2.1.1</code></td>
+<td style="text-align: left;"><code>METIS</code> is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>CMake 3.24.2</code></td>
+<td style="text-align: left;"><code>module load cmake/3.24.2</code></td>
+<td style="text-align: left;"><code>CMake</code> is a free, cross-platform, software development tool for building applications via compiler-independent instructions.</td>
+</tr>
+</tbody>
+</table>
+<p>Update the following configuration files to match the system's compiler and library settings:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">File</th>
+<th style="text-align: left;">Line No.</th>
+<th style="text-align: left;">From</th>
+<th style="text-align: left;">To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/etc/bashrc</code></td>
+<td style="text-align: left;"><code>99</code></td>
+<td style="text-align: left;"><code>#export WM_COMPILE_CONTROL="+strict"</code></td>
+<td style="text-align: left;"><code>export WM_COMPILE_CONTROL="+openmp"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/etc/bashrc</code></td>
+<td style="text-align: left;"><code>106</code></td>
+<td style="text-align: left;"><code>export WM_MPLIB=SYSTEMOPENMPI</code></td>
+<td style="text-align: left;"><code>export WM_MPLIB=mvapich2</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/etc/config.sh/scotch</code></td>
+<td style="text-align: left;"><code>38</code></td>
+<td style="text-align: left;"><code>SCOTCH_VERSION=scotch_6.1.0</code></td>
+<td style="text-align: left;"><code>SCOTCH_VERSION=scotch-system</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/etc/config.sh/metis</code></td>
+<td style="text-align: left;"><code>36</code></td>
+<td style="text-align: left;"><code>METIS_VERSION=metis-5.1.0</code></td>
+<td style="text-align: left;"><code>METIS_VERSION=metis-system</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/wmake/rules/General/Gcc/c</code></td>
+<td style="text-align: left;"><code>6</code></td>
+<td style="text-align: left;"><code>cc         := gcc$(COMPILER_VERSION)</code></td>
+<td style="text-align: left;"><code>cc         := mpicc</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>$WM_PROJECT_DIR/wmake/rules/General/Gcc/c++</code></td>
+<td style="text-align: left;"><code>9</code></td>
+<td style="text-align: left;"><code>CC         := g++$(COMPILER_VERSION) -std=c++14</code></td>
+<td style="text-align: left;"><code>CC         := mpic++ -std=c++14</code></td>
+</tr>
+</tbody>
+</table>
+<p>Append the following lines to <code>$WM_PROJECT_DIR/etc/bashrc</code>:</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span>
+<span class="normal"><a href="#__codelineno-4-4">4</a></span>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span>
+<span class="normal"><a href="#__codelineno-4-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="c1"># Load system compilers, libraries, and tools</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a>module<span class="w"> </span>load<span class="w"> </span>gcc/11.2.0
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a>module<span class="w"> </span>load<span class="w"> </span>mvapich2/2.3.7
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a>module<span class="w"> </span>load<span class="w"> </span>scotch/7.0.7-i32
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a>module<span class="w"> </span>load<span class="w"> </span>metis/5.2.1.1
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a>module<span class="w"> </span>load<span class="w"> </span>cmake/3.24.2
+</span></code></pre></div></td></tr></table></div>
+<details class="example">
+<summary>Complete contents of the modified <code>$WM_PROJECT_DIR/etc/bashrc</code> file</summary>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">  1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">  2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">  3</a></span>
+<span class="normal"><a href="#__codelineno-5-4">  4</a></span>
+<span class="normal"><a href="#__codelineno-5-5">  5</a></span>
+<span class="normal"><a href="#__codelineno-5-6">  6</a></span>
+<span class="normal"><a href="#__codelineno-5-7">  7</a></span>
+<span class="normal"><a href="#__codelineno-5-8">  8</a></span>
+<span class="normal"><a href="#__codelineno-5-9">  9</a></span>
+<span class="normal"><a href="#__codelineno-5-10"> 10</a></span>
+<span class="normal"><a href="#__codelineno-5-11"> 11</a></span>
+<span class="normal"><a href="#__codelineno-5-12"> 12</a></span>
+<span class="normal"><a href="#__codelineno-5-13"> 13</a></span>
+<span class="normal"><a href="#__codelineno-5-14"> 14</a></span>
+<span class="normal"><a href="#__codelineno-5-15"> 15</a></span>
+<span class="normal"><a href="#__codelineno-5-16"> 16</a></span>
+<span class="normal"><a href="#__codelineno-5-17"> 17</a></span>
+<span class="normal"><a href="#__codelineno-5-18"> 18</a></span>
+<span class="normal"><a href="#__codelineno-5-19"> 19</a></span>
+<span class="normal"><a href="#__codelineno-5-20"> 20</a></span>
+<span class="normal"><a href="#__codelineno-5-21"> 21</a></span>
+<span class="normal"><a href="#__codelineno-5-22"> 22</a></span>
+<span class="normal"><a href="#__codelineno-5-23"> 23</a></span>
+<span class="normal"><a href="#__codelineno-5-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-5-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-5-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-5-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-5-28"> 28</a></span>
+<span class="normal"><a href="#__codelineno-5-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-5-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-5-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-5-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-5-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-5-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-5-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-5-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-5-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-5-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-5-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-5-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-5-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-5-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-5-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-5-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-5-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-5-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-5-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-5-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-5-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-5-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-5-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-5-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-5-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-5-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-5-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-5-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-5-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-5-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-5-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-5-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-5-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-5-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-5-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-5-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-5-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-5-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-5-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-5-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-5-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-5-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-5-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-5-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-5-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-5-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-5-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-5-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-5-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-5-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-5-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-5-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-5-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-5-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-5-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-5-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-5-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-5-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-5-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-5-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-5-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-5-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-5-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-5-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-5-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-5-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-5-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-5-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-5-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-5-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-5-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-5-100">100</a></span>
+<span class="normal"><a href="#__codelineno-5-101">101</a></span>
+<span class="normal"><a href="#__codelineno-5-102">102</a></span>
+<span class="normal"><a href="#__codelineno-5-103">103</a></span>
+<span class="normal"><a href="#__codelineno-5-104">104</a></span>
+<span class="normal"><a href="#__codelineno-5-105">105</a></span>
+<span class="normal"><a href="#__codelineno-5-106">106</a></span>
+<span class="normal"><a href="#__codelineno-5-107">107</a></span>
+<span class="normal"><a href="#__codelineno-5-108">108</a></span>
+<span class="normal"><a href="#__codelineno-5-109">109</a></span>
+<span class="normal"><a href="#__codelineno-5-110">110</a></span>
+<span class="normal"><a href="#__codelineno-5-111">111</a></span>
+<span class="normal"><a href="#__codelineno-5-112">112</a></span>
+<span class="normal"><a href="#__codelineno-5-113">113</a></span>
+<span class="normal"><a href="#__codelineno-5-114">114</a></span>
+<span class="normal"><a href="#__codelineno-5-115">115</a></span>
+<span class="normal"><a href="#__codelineno-5-116">116</a></span>
+<span class="normal"><a href="#__codelineno-5-117">117</a></span>
+<span class="normal"><a href="#__codelineno-5-118">118</a></span>
+<span class="normal"><a href="#__codelineno-5-119">119</a></span>
+<span class="normal"><a href="#__codelineno-5-120">120</a></span>
+<span class="normal"><a href="#__codelineno-5-121">121</a></span>
+<span class="normal"><a href="#__codelineno-5-122">122</a></span>
+<span class="normal"><a href="#__codelineno-5-123">123</a></span>
+<span class="normal"><a href="#__codelineno-5-124">124</a></span>
+<span class="normal"><a href="#__codelineno-5-125">125</a></span>
+<span class="normal"><a href="#__codelineno-5-126">126</a></span>
+<span class="normal"><a href="#__codelineno-5-127">127</a></span>
+<span class="normal"><a href="#__codelineno-5-128">128</a></span>
+<span class="normal"><a href="#__codelineno-5-129">129</a></span>
+<span class="normal"><a href="#__codelineno-5-130">130</a></span>
+<span class="normal"><a href="#__codelineno-5-131">131</a></span>
+<span class="normal"><a href="#__codelineno-5-132">132</a></span>
+<span class="normal"><a href="#__codelineno-5-133">133</a></span>
+<span class="normal"><a href="#__codelineno-5-134">134</a></span>
+<span class="normal"><a href="#__codelineno-5-135">135</a></span>
+<span class="normal"><a href="#__codelineno-5-136">136</a></span>
+<span class="normal"><a href="#__codelineno-5-137">137</a></span>
+<span class="normal"><a href="#__codelineno-5-138">138</a></span>
+<span class="normal"><a href="#__codelineno-5-139">139</a></span>
+<span class="normal"><a href="#__codelineno-5-140">140</a></span>
+<span class="normal"><a href="#__codelineno-5-141">141</a></span>
+<span class="normal"><a href="#__codelineno-5-142">142</a></span>
+<span class="normal"><a href="#__codelineno-5-143">143</a></span>
+<span class="normal"><a href="#__codelineno-5-144">144</a></span>
+<span class="normal"><a href="#__codelineno-5-145">145</a></span>
+<span class="normal"><a href="#__codelineno-5-146">146</a></span>
+<span class="normal"><a href="#__codelineno-5-147">147</a></span>
+<span class="normal"><a href="#__codelineno-5-148">148</a></span>
+<span class="normal"><a href="#__codelineno-5-149">149</a></span>
+<span class="normal"><a href="#__codelineno-5-150">150</a></span>
+<span class="normal"><a href="#__codelineno-5-151">151</a></span>
+<span class="normal"><a href="#__codelineno-5-152">152</a></span>
+<span class="normal"><a href="#__codelineno-5-153">153</a></span>
+<span class="normal"><a href="#__codelineno-5-154">154</a></span>
+<span class="normal"><a href="#__codelineno-5-155">155</a></span>
+<span class="normal"><a href="#__codelineno-5-156">156</a></span>
+<span class="normal"><a href="#__codelineno-5-157">157</a></span>
+<span class="normal"><a href="#__codelineno-5-158">158</a></span>
+<span class="normal"><a href="#__codelineno-5-159">159</a></span>
+<span class="normal"><a href="#__codelineno-5-160">160</a></span>
+<span class="normal"><a href="#__codelineno-5-161">161</a></span>
+<span class="normal"><a href="#__codelineno-5-162">162</a></span>
+<span class="normal"><a href="#__codelineno-5-163">163</a></span>
+<span class="normal"><a href="#__codelineno-5-164">164</a></span>
+<span class="normal"><a href="#__codelineno-5-165">165</a></span>
+<span class="normal"><a href="#__codelineno-5-166">166</a></span>
+<span class="normal"><a href="#__codelineno-5-167">167</a></span>
+<span class="normal"><a href="#__codelineno-5-168">168</a></span>
+<span class="normal"><a href="#__codelineno-5-169">169</a></span>
+<span class="normal"><a href="#__codelineno-5-170">170</a></span>
+<span class="normal"><a href="#__codelineno-5-171">171</a></span>
+<span class="normal"><a href="#__codelineno-5-172">172</a></span>
+<span class="normal"><a href="#__codelineno-5-173">173</a></span>
+<span class="normal"><a href="#__codelineno-5-174">174</a></span>
+<span class="normal"><a href="#__codelineno-5-175">175</a></span>
+<span class="normal"><a href="#__codelineno-5-176">176</a></span>
+<span class="normal"><a href="#__codelineno-5-177">177</a></span>
+<span class="normal"><a href="#__codelineno-5-178">178</a></span>
+<span class="normal"><a href="#__codelineno-5-179">179</a></span>
+<span class="normal"><a href="#__codelineno-5-180">180</a></span>
+<span class="normal"><a href="#__codelineno-5-181">181</a></span>
+<span class="normal"><a href="#__codelineno-5-182">182</a></span>
+<span class="normal"><a href="#__codelineno-5-183">183</a></span>
+<span class="normal"><a href="#__codelineno-5-184">184</a></span>
+<span class="normal"><a href="#__codelineno-5-185">185</a></span>
+<span class="normal"><a href="#__codelineno-5-186">186</a></span>
+<span class="normal"><a href="#__codelineno-5-187">187</a></span>
+<span class="normal"><a href="#__codelineno-5-188">188</a></span>
+<span class="normal"><a href="#__codelineno-5-189">189</a></span>
+<span class="normal"><a href="#__codelineno-5-190">190</a></span>
+<span class="normal"><a href="#__codelineno-5-191">191</a></span>
+<span class="normal"><a href="#__codelineno-5-192">192</a></span>
+<span class="normal"><a href="#__codelineno-5-193">193</a></span>
+<span class="normal"><a href="#__codelineno-5-194">194</a></span>
+<span class="normal"><a href="#__codelineno-5-195">195</a></span>
+<span class="normal"><a href="#__codelineno-5-196">196</a></span>
+<span class="normal"><a href="#__codelineno-5-197">197</a></span>
+<span class="normal"><a href="#__codelineno-5-198">198</a></span>
+<span class="normal"><a href="#__codelineno-5-199">199</a></span>
+<span class="normal"><a href="#__codelineno-5-200">200</a></span>
+<span class="normal"><a href="#__codelineno-5-201">201</a></span>
+<span class="normal"><a href="#__codelineno-5-202">202</a></span>
+<span class="normal"><a href="#__codelineno-5-203">203</a></span>
+<span class="normal"><a href="#__codelineno-5-204">204</a></span>
+<span class="normal"><a href="#__codelineno-5-205">205</a></span>
+<span class="normal"><a href="#__codelineno-5-206">206</a></span>
+<span class="normal"><a href="#__codelineno-5-207">207</a></span>
+<span class="normal"><a href="#__codelineno-5-208">208</a></span>
+<span class="normal"><a href="#__codelineno-5-209">209</a></span>
+<span class="normal"><a href="#__codelineno-5-210">210</a></span>
+<span class="normal"><a href="#__codelineno-5-211">211</a></span>
+<span class="normal"><a href="#__codelineno-5-212">212</a></span>
+<span class="normal"><a href="#__codelineno-5-213">213</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1">#----------------------------------*-sh-*--------------------------------------</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="c1"># =========                 |</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="c1"># \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="c1">#  \\    /   O peration     |</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="c1">#   \\  /    A nd           | www.openfoam.com</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="c1">#    \\/     M anipulation  |</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="c1">#     Copyright (C) 2011-2016 OpenFOAM Foundation</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="c1">#     Copyright (C) 2016-2023 OpenCFD Ltd.</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="c1"># License</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="c1">#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="c1">#</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="c1"># File</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="c1">#     etc/bashrc</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="c1">#</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="c1"># Description</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="c1">#     The OpenFOAM environment for POSIX shell (eg, bash,dash,zsh,...).</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a><span class="c1">#     Source manually or from the ~/.bashrc or ~/.profile files.</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a><span class="c1">#</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21"></a><span class="c1">#     Most settings can be overridden with a &lt;prefs.sh&gt; file:</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22"></a><span class="c1">#</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23"></a><span class="c1">#       - Base values (eg, from system admin):</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24"></a><span class="c1">#         -  $WM_PROJECT_DIR/etc/prefs.sh</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25"></a><span class="c1">#</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26"></a><span class="c1">#       - User or group values (first file found):</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27"></a><span class="c1">#         -  ~/.OpenFOAM/$FOAM_API/prefs.sh</span>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28"></a><span class="c1">#         -  ~/.OpenFOAM/prefs.sh</span>
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29"></a><span class="c1">#         -  $WM_PROJECT_SITE/$FOAM_API/etc/prefs.sh</span>
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30"></a><span class="c1">#         -  $WM_PROJECT_SITE/etc/prefs.sh</span>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31"></a><span class="c1">#</span>
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32"></a><span class="c1">#     Some settings can also be overridden on the command-line when</span>
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33"></a><span class="c1">#     sourcing this file. For example,</span>
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34"></a><span class="c1">#</span>
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35"></a><span class="c1">#       . /path/etc/bashrc WM_COMPILER=Clang WM_LABEL_SIZE=64</span>
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36"></a><span class="c1">#</span>
+</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37"></a><span class="c1"># Environment</span>
+</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38"></a><span class="c1">#     FOAM_CONFIG_ETC</span>
+</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39"></a><span class="c1">#     - alternative/additional location for OpenFOAM etc/ directory</span>
+</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40"></a><span class="c1">#</span>
+</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41"></a><span class="c1">#     FOAM_CONFIG_MODE (search mode for etc config files - see foamEtcFile)</span>
+</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42"></a><span class="c1">#         - eg, FOAM_CONFIG_MODE=&quot;o&quot; to only use OpenFOAM config files</span>
+</span><span id="__span-5-43"><a id="__codelineno-5-43" name="__codelineno-5-43"></a><span class="c1">#         - no influence on OpenFOAM applications, just the config files</span>
+</span><span id="__span-5-44"><a id="__codelineno-5-44" name="__codelineno-5-44"></a><span class="c1">#</span>
+</span><span id="__span-5-45"><a id="__codelineno-5-45" name="__codelineno-5-45"></a><span class="c1">#     FOAM_VERBOSE (set/unset)</span>
+</span><span id="__span-5-46"><a id="__codelineno-5-46" name="__codelineno-5-46"></a><span class="c1">#         - add extra verbosity when sourcing files</span>
+</span><span id="__span-5-47"><a id="__codelineno-5-47" name="__codelineno-5-47"></a><span class="c1">#</span>
+</span><span id="__span-5-48"><a id="__codelineno-5-48" name="__codelineno-5-48"></a><span class="c1">#     WM_PROJECT_SITE (optional directory)</span>
+</span><span id="__span-5-49"><a id="__codelineno-5-49" name="__codelineno-5-49"></a><span class="c1">#         - local site-specific directory, uses WM_PROJECT_DIR/site if unset</span>
+</span><span id="__span-5-50"><a id="__codelineno-5-50" name="__codelineno-5-50"></a><span class="c1">#</span>
+</span><span id="__span-5-51"><a id="__codelineno-5-51" name="__codelineno-5-51"></a><span class="c1"># Note</span>
+</span><span id="__span-5-52"><a id="__codelineno-5-52" name="__codelineno-5-52"></a><span class="c1">#     Changes made to this file will be lost with the next upgrade.</span>
+</span><span id="__span-5-53"><a id="__codelineno-5-53" name="__codelineno-5-53"></a><span class="c1">#</span>
+</span><span id="__span-5-54"><a id="__codelineno-5-54" name="__codelineno-5-54"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span><span id="__span-5-55"><a id="__codelineno-5-55" name="__codelineno-5-55"></a>
+</span><span id="__span-5-56"><a id="__codelineno-5-56" name="__codelineno-5-56"></a><span class="c1"># [WM_PROJECT_VERSION] - A human-readable version name</span>
+</span><span id="__span-5-57"><a id="__codelineno-5-57" name="__codelineno-5-57"></a><span class="c1"># A development version is often named &#39;com&#39; - as in www.openfoam.com</span>
+</span><span id="__span-5-58"><a id="__codelineno-5-58" name="__codelineno-5-58"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_PROJECT_VERSION</span><span class="o">=</span>v2312
+</span><span id="__span-5-59"><a id="__codelineno-5-59" name="__codelineno-5-59"></a>
+</span><span id="__span-5-60"><a id="__codelineno-5-60" name="__codelineno-5-60"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span><span id="__span-5-61"><a id="__codelineno-5-61" name="__codelineno-5-61"></a><span class="c1"># Configuration environment variables.</span>
+</span><span id="__span-5-62"><a id="__codelineno-5-62" name="__codelineno-5-62"></a><span class="c1"># Override with &lt;prefs.sh&gt; instead of editing here.</span>
+</span><span id="__span-5-63"><a id="__codelineno-5-63" name="__codelineno-5-63"></a>
+</span><span id="__span-5-64"><a id="__codelineno-5-64" name="__codelineno-5-64"></a><span class="c1"># [WM_COMPILER_TYPE] - Compiler location:</span>
+</span><span id="__span-5-65"><a id="__codelineno-5-65" name="__codelineno-5-65"></a><span class="c1"># = system | ThirdParty</span>
+</span><span id="__span-5-66"><a id="__codelineno-5-66" name="__codelineno-5-66"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_COMPILER_TYPE</span><span class="o">=</span>system
+</span><span id="__span-5-67"><a id="__codelineno-5-67" name="__codelineno-5-67"></a>
+</span><span id="__span-5-68"><a id="__codelineno-5-68" name="__codelineno-5-68"></a><span class="c1"># [WM_COMPILER] - Compiler:</span>
+</span><span id="__span-5-69"><a id="__codelineno-5-69" name="__codelineno-5-69"></a><span class="c1"># = Gcc | Clang | Icc | Icx | Amd | Arm | Cray | Fujitsu | Nvidia |</span>
+</span><span id="__span-5-70"><a id="__codelineno-5-70" name="__codelineno-5-70"></a><span class="c1">#   Gcc&lt;digits&gt; | Clang&lt;digits&gt;</span>
+</span><span id="__span-5-71"><a id="__codelineno-5-71" name="__codelineno-5-71"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_COMPILER</span><span class="o">=</span>Icx
+</span><span id="__span-5-72"><a id="__codelineno-5-72" name="__codelineno-5-72"></a>
+</span><span id="__span-5-73"><a id="__codelineno-5-73" name="__codelineno-5-73"></a><span class="c1"># [WM_PRECISION_OPTION] - Floating-point precision:</span>
+</span><span id="__span-5-74"><a id="__codelineno-5-74" name="__codelineno-5-74"></a><span class="c1"># = DP | SP | SPDP</span>
+</span><span id="__span-5-75"><a id="__codelineno-5-75" name="__codelineno-5-75"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_PRECISION_OPTION</span><span class="o">=</span>DP
+</span><span id="__span-5-76"><a id="__codelineno-5-76" name="__codelineno-5-76"></a>
+</span><span id="__span-5-77"><a id="__codelineno-5-77" name="__codelineno-5-77"></a><span class="c1"># [WM_LABEL_SIZE] - Label size in bits:</span>
+</span><span id="__span-5-78"><a id="__codelineno-5-78" name="__codelineno-5-78"></a><span class="c1"># = 32 | 64</span>
+</span><span id="__span-5-79"><a id="__codelineno-5-79" name="__codelineno-5-79"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_LABEL_SIZE</span><span class="o">=</span><span class="m">32</span>
+</span><span id="__span-5-80"><a id="__codelineno-5-80" name="__codelineno-5-80"></a>
+</span><span id="__span-5-81"><a id="__codelineno-5-81" name="__codelineno-5-81"></a><span class="c1"># [WM_COMPILE_OPTION] - Optimised(default), debug, profiling, other:</span>
+</span><span id="__span-5-82"><a id="__codelineno-5-82" name="__codelineno-5-82"></a><span class="c1"># = Opt | Dbg | Debug | Prof</span>
+</span><span id="__span-5-83"><a id="__codelineno-5-83" name="__codelineno-5-83"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_COMPILE_OPTION</span><span class="o">=</span>Opt
+</span><span id="__span-5-84"><a id="__codelineno-5-84" name="__codelineno-5-84"></a>
+</span><span id="__span-5-85"><a id="__codelineno-5-85" name="__codelineno-5-85"></a><span class="c1"># [WM_COMPILE_CONTROL] - additional control for compilation/linking</span>
+</span><span id="__span-5-86"><a id="__codelineno-5-86" name="__codelineno-5-86"></a><span class="c1">#   +gold   : use gold linker</span>
+</span><span id="__span-5-87"><a id="__codelineno-5-87" name="__codelineno-5-87"></a><span class="c1">#   +link-ld: use   ld linker [clang]</span>
+</span><span id="__span-5-88"><a id="__codelineno-5-88" name="__codelineno-5-88"></a><span class="c1">#   +lld    : use  lld linker [clang]</span>
+</span><span id="__span-5-89"><a id="__codelineno-5-89" name="__codelineno-5-89"></a><span class="c1">#   +mold   : use mold linker [clang]</span>
+</span><span id="__span-5-90"><a id="__codelineno-5-90" name="__codelineno-5-90"></a><span class="c1">#   ~libz   : without libz compression</span>
+</span><span id="__span-5-91"><a id="__codelineno-5-91" name="__codelineno-5-91"></a><span class="c1">#   ~rpath  : without rpath handling [MacOS]</span>
+</span><span id="__span-5-92"><a id="__codelineno-5-92" name="__codelineno-5-92"></a><span class="c1">#   +openmp : with openmp</span>
+</span><span id="__span-5-93"><a id="__codelineno-5-93" name="__codelineno-5-93"></a><span class="c1">#   ~openmp : without openmp</span>
+</span><span id="__span-5-94"><a id="__codelineno-5-94" name="__codelineno-5-94"></a><span class="c1">#   +ccache : use ccache</span>
+</span><span id="__span-5-95"><a id="__codelineno-5-95" name="__codelineno-5-95"></a><span class="c1">#   +xcrun  : use xcrun and native compilers [MacOS]</span>
+</span><span id="__span-5-96"><a id="__codelineno-5-96" name="__codelineno-5-96"></a><span class="c1">#   +strict : more deprecation warnings (may generate *many* warnings)</span>
+</span><span id="__span-5-97"><a id="__codelineno-5-97" name="__codelineno-5-97"></a><span class="c1">#   ccache=... : ccache command (unquoted, single/double or &lt;&gt; quoted)</span>
+</span><span id="__span-5-98"><a id="__codelineno-5-98" name="__codelineno-5-98"></a><span class="c1">#   version=... : compiler suffix (eg, version=11 -&gt; gcc-11)</span>
+</span><span id="__span-5-99"><a id="__codelineno-5-99" name="__codelineno-5-99"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_COMPILE_CONTROL</span><span class="o">=</span><span class="s2">&quot;+openmp&quot;</span>
+</span><span id="__span-5-100"><a id="__codelineno-5-100" name="__codelineno-5-100"></a>
+</span><span id="__span-5-101"><a id="__codelineno-5-101" name="__codelineno-5-101"></a><span class="c1"># [WM_MPLIB] - MPI implementation:</span>
+</span><span id="__span-5-102"><a id="__codelineno-5-102" name="__codelineno-5-102"></a><span class="c1"># = SYSTEMOPENMPI | OPENMPI | SYSTEMMPI | MPI | MPICH | MPICH-GM |</span>
+</span><span id="__span-5-103"><a id="__codelineno-5-103" name="__codelineno-5-103"></a><span class="c1">#   HPMPI | CRAY-MPICH | FJMPI | QSMPI | SGIMPI | INTELMPI | USERMPI</span>
+</span><span id="__span-5-104"><a id="__codelineno-5-104" name="__codelineno-5-104"></a><span class="c1"># Specify SYSTEMOPENMPI1, SYSTEMOPENMPI2 for internal tracking (if desired)</span>
+</span><span id="__span-5-105"><a id="__codelineno-5-105" name="__codelineno-5-105"></a><span class="c1"># Can also use INTELMPI-xyz etc and define your own wmake rule</span>
+</span><span id="__span-5-106"><a id="__codelineno-5-106" name="__codelineno-5-106"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_MPLIB</span><span class="o">=</span>INTELMPI
+</span><span id="__span-5-107"><a id="__codelineno-5-107" name="__codelineno-5-107"></a>
+</span><span id="__span-5-108"><a id="__codelineno-5-108" name="__codelineno-5-108"></a>
+</span><span id="__span-5-109"><a id="__codelineno-5-109" name="__codelineno-5-109"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span><span id="__span-5-110"><a id="__codelineno-5-110" name="__codelineno-5-110"></a><span class="c1"># (advanced / legacy)</span>
+</span><span id="__span-5-111"><a id="__codelineno-5-111" name="__codelineno-5-111"></a>
+</span><span id="__span-5-112"><a id="__codelineno-5-112" name="__codelineno-5-112"></a><span class="c1"># [WM_PROJECT] - This project is &quot;OpenFOAM&quot; - do not change</span>
+</span><span id="__span-5-113"><a id="__codelineno-5-113" name="__codelineno-5-113"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_PROJECT</span><span class="o">=</span>OpenFOAM
+</span><span id="__span-5-114"><a id="__codelineno-5-114" name="__codelineno-5-114"></a>
+</span><span id="__span-5-115"><a id="__codelineno-5-115" name="__codelineno-5-115"></a><span class="c1"># [projectDir] - directory containing this OpenFOAM version.</span>
+</span><span id="__span-5-116"><a id="__codelineno-5-116" name="__codelineno-5-116"></a><span class="c1"># \- When this file is located as $WM_PROJECT_DIR/etc/bashrc, the next lines</span>
+</span><span id="__span-5-117"><a id="__codelineno-5-117" name="__codelineno-5-117"></a><span class="c1">#    should work when sourced by BASH or ZSH shells. If this however fails,</span>
+</span><span id="__span-5-118"><a id="__codelineno-5-118" name="__codelineno-5-118"></a><span class="c1">#    set one of the fallback values to an appropriate path.</span>
+</span><span id="__span-5-119"><a id="__codelineno-5-119" name="__codelineno-5-119"></a><span class="c1">#</span>
+</span><span id="__span-5-120"><a id="__codelineno-5-120" name="__codelineno-5-120"></a><span class="c1">#    This can be removed if an absolute path is provided for WM_PROJECT_DIR</span>
+</span><span id="__span-5-121"><a id="__codelineno-5-121" name="__codelineno-5-121"></a><span class="c1">#    later on in this file</span>
+</span><span id="__span-5-122"><a id="__codelineno-5-122" name="__codelineno-5-122"></a><span class="c1"># --</span>
+</span><span id="__span-5-123"><a id="__codelineno-5-123" name="__codelineno-5-123"></a><span class="nv">projectDir</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BASH_SOURCE</span><span class="k">:-</span><span class="si">${</span><span class="nv">ZSH_NAME</span><span class="p">:+</span><span class="nv">$0</span><span class="si">}}</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span id="__span-5-124"><a id="__codelineno-5-124" name="__codelineno-5-124"></a><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$projectDir</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">projectDir</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span><span class="se">\c</span>d<span class="w"> </span><span class="k">$(</span>dirname<span class="w"> </span><span class="nv">$projectDir</span><span class="k">)</span>/..<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\p</span>wd<span class="w"> </span>-L<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">||</span><span class="se">\</span>
+</span><span id="__span-5-125"><a id="__codelineno-5-125" name="__codelineno-5-125"></a><span class="nv">projectDir</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$WORK</span><span class="s2">/OpenFOAM/OpenFOAM-</span><span class="nv">$WM_PROJECT_VERSION</span><span class="s2">&quot;</span>
+</span><span id="__span-5-126"><a id="__codelineno-5-126" name="__codelineno-5-126"></a><span class="c1"># projectDir=&quot;/opt/openfoam/OpenFOAM-$WM_PROJECT_VERSION&quot;</span>
+</span><span id="__span-5-127"><a id="__codelineno-5-127" name="__codelineno-5-127"></a><span class="c1"># projectDir=&quot;/usr/local/OpenFOAM/OpenFOAM-$WM_PROJECT_VERSION&quot;</span>
+</span><span id="__span-5-128"><a id="__codelineno-5-128" name="__codelineno-5-128"></a><span class="c1">################################################################################</span>
+</span><span id="__span-5-129"><a id="__codelineno-5-129" name="__codelineno-5-129"></a><span class="c1"># Or optionally hard-coded (eg, with autoconfig)</span>
+</span><span id="__span-5-130"><a id="__codelineno-5-130" name="__codelineno-5-130"></a><span class="c1"># projectDir=&quot;@PROJECT_DIR@&quot;</span>
+</span><span id="__span-5-131"><a id="__codelineno-5-131" name="__codelineno-5-131"></a>:<span class="w"> </span><span class="c1"># Safety statement (if the user removed all fallback values)</span>
+</span><span id="__span-5-132"><a id="__codelineno-5-132" name="__codelineno-5-132"></a>
+</span><span id="__span-5-133"><a id="__codelineno-5-133" name="__codelineno-5-133"></a><span class="c1"># [FOAM_SIGFPE] - Trap floating-point exceptions.</span>
+</span><span id="__span-5-134"><a id="__codelineno-5-134" name="__codelineno-5-134"></a><span class="c1">#               - overrides the &#39;trapFpe&#39; controlDict entry</span>
+</span><span id="__span-5-135"><a id="__codelineno-5-135" name="__codelineno-5-135"></a><span class="c1"># = true | false</span>
+</span><span id="__span-5-136"><a id="__codelineno-5-136" name="__codelineno-5-136"></a><span class="c1">#export FOAM_SIGFPE=true</span>
+</span><span id="__span-5-137"><a id="__codelineno-5-137" name="__codelineno-5-137"></a>
+</span><span id="__span-5-138"><a id="__codelineno-5-138" name="__codelineno-5-138"></a><span class="c1"># [FOAM_SETNAN] - Initialize memory with NaN</span>
+</span><span id="__span-5-139"><a id="__codelineno-5-139" name="__codelineno-5-139"></a><span class="c1">#               - overrides the &#39;setNaN&#39; controlDict entry</span>
+</span><span id="__span-5-140"><a id="__codelineno-5-140" name="__codelineno-5-140"></a><span class="c1"># = true | false</span>
+</span><span id="__span-5-141"><a id="__codelineno-5-141" name="__codelineno-5-141"></a><span class="c1">#export FOAM_SETNAN=false</span>
+</span><span id="__span-5-142"><a id="__codelineno-5-142" name="__codelineno-5-142"></a>
+</span><span id="__span-5-143"><a id="__codelineno-5-143" name="__codelineno-5-143"></a><span class="c1"># [FOAM_ABORT] - Treat exit() on FatalError as abort()</span>
+</span><span id="__span-5-144"><a id="__codelineno-5-144" name="__codelineno-5-144"></a><span class="c1"># = true | false</span>
+</span><span id="__span-5-145"><a id="__codelineno-5-145" name="__codelineno-5-145"></a><span class="c1">#export FOAM_ABORT=false</span>
+</span><span id="__span-5-146"><a id="__codelineno-5-146" name="__codelineno-5-146"></a>
+</span><span id="__span-5-147"><a id="__codelineno-5-147" name="__codelineno-5-147"></a><span class="c1"># [FOAM_CODE_TEMPLATES] - dynamicCode templates</span>
+</span><span id="__span-5-148"><a id="__codelineno-5-148" name="__codelineno-5-148"></a><span class="c1"># - unset: uses &#39;foamEtcFile -list codeTemplates/dynamicCode&#39;</span>
+</span><span id="__span-5-149"><a id="__codelineno-5-149" name="__codelineno-5-149"></a><span class="c1">##export FOAM_CODE_TEMPLATES=&quot;$WM_PROJECT_DIR/etc/codeTemplates/dynamicCode&quot;</span>
+</span><span id="__span-5-150"><a id="__codelineno-5-150" name="__codelineno-5-150"></a>
+</span><span id="__span-5-151"><a id="__codelineno-5-151" name="__codelineno-5-151"></a><span class="c1"># [FOAM_JOB_DIR] - location of jobControl</span>
+</span><span id="__span-5-152"><a id="__codelineno-5-152" name="__codelineno-5-152"></a><span class="c1">#                - unset: equivalent to ~/.OpenFOAM/jobControl</span>
+</span><span id="__span-5-153"><a id="__codelineno-5-153" name="__codelineno-5-153"></a><span class="c1"># export FOAM_JOB_DIR=&quot;$HOME/.OpenFOAM/jobControl&quot;</span>
+</span><span id="__span-5-154"><a id="__codelineno-5-154" name="__codelineno-5-154"></a>
+</span><span id="__span-5-155"><a id="__codelineno-5-155" name="__codelineno-5-155"></a><span class="c1"># [WM_OSTYPE] - Operating System Type (set automatically)</span>
+</span><span id="__span-5-156"><a id="__codelineno-5-156" name="__codelineno-5-156"></a><span class="c1"># = POSIX | MSwindows</span>
+</span><span id="__span-5-157"><a id="__codelineno-5-157" name="__codelineno-5-157"></a><span class="c1">#export WM_OSTYPE=POSIX</span>
+</span><span id="__span-5-158"><a id="__codelineno-5-158" name="__codelineno-5-158"></a>
+</span><span id="__span-5-159"><a id="__codelineno-5-159" name="__codelineno-5-159"></a><span class="c1"># [WM_ARCH_OPTION] - compiling with -m32 option on 64-bit system</span>
+</span><span id="__span-5-160"><a id="__codelineno-5-160" name="__codelineno-5-160"></a><span class="c1"># = 32 | 64</span>
+</span><span id="__span-5-161"><a id="__codelineno-5-161" name="__codelineno-5-161"></a><span class="c1">#   * on a 64-bit OS this can be 32 or 64</span>
+</span><span id="__span-5-162"><a id="__codelineno-5-162" name="__codelineno-5-162"></a><span class="c1">#   * on a 32-bit OS this option is ignored (always 32-bit)</span>
+</span><span id="__span-5-163"><a id="__codelineno-5-163" name="__codelineno-5-163"></a><span class="c1">#export WM_ARCH_OPTION=64</span>
+</span><span id="__span-5-164"><a id="__codelineno-5-164" name="__codelineno-5-164"></a>
+</span><span id="__span-5-165"><a id="__codelineno-5-165" name="__codelineno-5-165"></a><span class="c1"># [FOAM_EXTRA_CFLAGS, FOAM_EXTRA_CXXFLAGS, FOAM_EXTRA_LDFLAGS]</span>
+</span><span id="__span-5-166"><a id="__codelineno-5-166" name="__codelineno-5-166"></a><span class="c1"># Additional compilation flags - do not inherit from the environment.</span>
+</span><span id="__span-5-167"><a id="__codelineno-5-167" name="__codelineno-5-167"></a><span class="c1"># Set after sourcing or via &lt;prefs.sh&gt; to avoid surprises.</span>
+</span><span id="__span-5-168"><a id="__codelineno-5-168" name="__codelineno-5-168"></a><span class="nb">unset</span><span class="w"> </span>FOAM_EXTRA_CFLAGS<span class="w"> </span>FOAM_EXTRA_CXXFLAGS<span class="w"> </span>FOAM_EXTRA_LDFLAGS
+</span><span id="__span-5-169"><a id="__codelineno-5-169" name="__codelineno-5-169"></a>
+</span><span id="__span-5-170"><a id="__codelineno-5-170" name="__codelineno-5-170"></a><span class="c1">################################################################################</span>
+</span><span id="__span-5-171"><a id="__codelineno-5-171" name="__codelineno-5-171"></a><span class="c1"># NO (NORMAL) USER EDITING BELOW HERE</span>
+</span><span id="__span-5-172"><a id="__codelineno-5-172" name="__codelineno-5-172"></a>
+</span><span id="__span-5-173"><a id="__codelineno-5-173" name="__codelineno-5-173"></a><span class="c1"># Capture values of old directories to be cleaned from PATH, LD_LIBRARY_PATH</span>
+</span><span id="__span-5-174"><a id="__codelineno-5-174" name="__codelineno-5-174"></a><span class="nv">foamOldDirs</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$WM_PROJECT_DIR</span><span class="s2"> </span><span class="nv">$WM_THIRD_PARTY_DIR</span><span class="s2"> \</span>
+</span><span id="__span-5-175"><a id="__codelineno-5-175" name="__codelineno-5-175"></a><span class="s2">    </span><span class="nv">$WORK</span><span class="s2">/</span><span class="nv">$WM_PROJECT</span><span class="s2">/</span><span class="si">${</span><span class="nv">USER</span><span class="k">:-</span><span class="nv">user</span><span class="si">}</span><span class="s2"> </span><span class="nv">$FOAM_USER_APPBIN</span><span class="s2"> </span><span class="nv">$FOAM_USER_LIBBIN</span><span class="s2"> \</span>
+</span><span id="__span-5-176"><a id="__codelineno-5-176" name="__codelineno-5-176"></a><span class="s2">    </span><span class="nv">$WM_PROJECT_SITE</span><span class="s2"> </span><span class="nv">$FOAM_SITE_APPBIN</span><span class="s2"> </span><span class="nv">$FOAM_SITE_LIBBIN</span><span class="s2"> \</span>
+</span><span id="__span-5-177"><a id="__codelineno-5-177" name="__codelineno-5-177"></a><span class="s2">    </span><span class="nv">$FOAM_MODULE_APPBIN</span><span class="s2"> </span><span class="nv">$FOAM_MODULE_LIBBIN</span><span class="s2">&quot;</span>
+</span><span id="__span-5-178"><a id="__codelineno-5-178" name="__codelineno-5-178"></a>
+</span><span id="__span-5-179"><a id="__codelineno-5-179" name="__codelineno-5-179"></a><span class="c1"># [WM_PROJECT_DIR] - Location of this OpenFOAM version</span>
+</span><span id="__span-5-180"><a id="__codelineno-5-180" name="__codelineno-5-180"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_PROJECT_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$projectDir</span><span class="s2">&quot;</span>
+</span><span id="__span-5-181"><a id="__codelineno-5-181" name="__codelineno-5-181"></a>
+</span><span id="__span-5-182"><a id="__codelineno-5-182" name="__codelineno-5-182"></a><span class="c1"># [WM_PROJECT_USER_DIR] - Location of user files</span>
+</span><span id="__span-5-183"><a id="__codelineno-5-183" name="__codelineno-5-183"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WM_PROJECT_USER_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$WORK</span><span class="s2">/</span><span class="nv">$WM_PROJECT</span><span class="s2">/</span><span class="si">${</span><span class="nv">USER</span><span class="k">:-</span><span class="nv">user</span><span class="si">}</span><span class="s2">-</span><span class="nv">$WM_PROJECT_VERSION</span><span class="s2">&quot;</span>
+</span><span id="__span-5-184"><a id="__codelineno-5-184" name="__codelineno-5-184"></a>
+</span><span id="__span-5-185"><a id="__codelineno-5-185" name="__codelineno-5-185"></a><span class="c1"># [WM_PROJECT_SITE] - Location of site-specific (group) files</span>
+</span><span id="__span-5-186"><a id="__codelineno-5-186" name="__codelineno-5-186"></a><span class="c1"># Default (unset) implies WM_PROJECT_DIR/site</span>
+</span><span id="__span-5-187"><a id="__codelineno-5-187" name="__codelineno-5-187"></a><span class="c1"># Normally defined in calling environment</span>
+</span><span id="__span-5-188"><a id="__codelineno-5-188" name="__codelineno-5-188"></a>
+</span><span id="__span-5-189"><a id="__codelineno-5-189" name="__codelineno-5-189"></a>
+</span><span id="__span-5-190"><a id="__codelineno-5-190" name="__codelineno-5-190"></a><span class="c1"># Finalize setup of OpenFOAM environment</span>
+</span><span id="__span-5-191"><a id="__codelineno-5-191" name="__codelineno-5-191"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$WM_PROJECT_DIR</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span>
+</span><span id="__span-5-192"><a id="__codelineno-5-192" name="__codelineno-5-192"></a><span class="k">then</span>
+</span><span id="__span-5-193"><a id="__codelineno-5-193" name="__codelineno-5-193"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$FOAM_VERBOSE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PS1</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span>
+</span><span id="__span-5-194"><a id="__codelineno-5-194" name="__codelineno-5-194"></a><span class="w">    </span><span class="k">then</span>
+</span><span id="__span-5-195"><a id="__codelineno-5-195" name="__codelineno-5-195"></a><span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;source </span><span class="nv">$WM_PROJECT_DIR</span><span class="s2">/etc/config.sh/setup&quot;</span><span class="w"> </span><span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+</span><span id="__span-5-196"><a id="__codelineno-5-196" name="__codelineno-5-196"></a><span class="w">    </span><span class="k">fi</span>
+</span><span id="__span-5-197"><a id="__codelineno-5-197" name="__codelineno-5-197"></a><span class="w">    </span>.<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$WM_PROJECT_DIR</span><span class="s2">/etc/config.sh/setup&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</span><span id="__span-5-198"><a id="__codelineno-5-198" name="__codelineno-5-198"></a><span class="k">else</span>
+</span><span id="__span-5-199"><a id="__codelineno-5-199" name="__codelineno-5-199"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Error: did not locate installation path for </span><span class="nv">$WM_PROJECT</span><span class="s2">-</span><span class="nv">$WM_PROJECT_VERSION</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+</span><span id="__span-5-200"><a id="__codelineno-5-200" name="__codelineno-5-200"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;No directory: </span><span class="nv">$WM_PROJECT_DIR</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+</span><span id="__span-5-201"><a id="__codelineno-5-201" name="__codelineno-5-201"></a><span class="k">fi</span>
+</span><span id="__span-5-202"><a id="__codelineno-5-202" name="__codelineno-5-202"></a>
+</span><span id="__span-5-203"><a id="__codelineno-5-203" name="__codelineno-5-203"></a><span class="c1"># Cleanup variables (done as final statement for a clean exit code)</span>
+</span><span id="__span-5-204"><a id="__codelineno-5-204" name="__codelineno-5-204"></a><span class="nb">unset</span><span class="w"> </span>foamOldDirs<span class="w"> </span>projectDir
+</span><span id="__span-5-205"><a id="__codelineno-5-205" name="__codelineno-5-205"></a>
+</span><span id="__span-5-206"><a id="__codelineno-5-206" name="__codelineno-5-206"></a><span class="c1"># Load system compilers, libraries, and tools</span>
+</span><span id="__span-5-207"><a id="__codelineno-5-207" name="__codelineno-5-207"></a>module<span class="w"> </span>load<span class="w"> </span>gcc/11.2.0
+</span><span id="__span-5-208"><a id="__codelineno-5-208" name="__codelineno-5-208"></a>module<span class="w"> </span>load<span class="w"> </span>mvapich2/2.3.7
+</span><span id="__span-5-209"><a id="__codelineno-5-209" name="__codelineno-5-209"></a>module<span class="w"> </span>load<span class="w"> </span>scotch/7.0.7-i32
+</span><span id="__span-5-210"><a id="__codelineno-5-210" name="__codelineno-5-210"></a>module<span class="w"> </span>load<span class="w"> </span>metis/5.2.1.1
+</span><span id="__span-5-211"><a id="__codelineno-5-211" name="__codelineno-5-211"></a>module<span class="w"> </span>load<span class="w"> </span>cmake/3.24.2
+</span><span id="__span-5-212"><a id="__codelineno-5-212" name="__codelineno-5-212"></a>
+</span><span id="__span-5-213"><a id="__codelineno-5-213" name="__codelineno-5-213"></a><span class="c1">#------------------------------------------------------------------------------</span>
+</span></code></pre></div></td></tr></table></div>
+</details>
+</div>
+</div>
+</div>
+<h3 id="24-download-geometricvofext">2.4 Download <code>geometricVofExt</code><a class="headerlink" href="#24-download-geometricvofext" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://github.com/daidezhi/geometricVofExt" target="_blank"><code>geometricVofExt</code></a> package is an unofficial extension to OpenFOAM for geometric Volume of Fluid (VOF) interface capturing. It provides a collection of utilities and solvers designed for accurate and conservative simulation of two-phase flows with sharp interface resolution on general unstructured meshes.</p>
+<p>Get <code>geometricVofExt</code> from an online reposity:
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
+<span class="normal"><a href="#__codelineno-6-2">2</a></span>
+<span class="normal"><a href="#__codelineno-6-3">3</a></span>
+<span class="normal"><a href="#__codelineno-6-4">4</a></span>
+<span class="normal"><a href="#__codelineno-6-5">5</a></span>
+<span class="normal"><a href="#__codelineno-6-6">6</a></span>
+<span class="normal"><a href="#__codelineno-6-7">7</a></span>
+<span class="normal"><a href="#__codelineno-6-8">8</a></span>
+<span class="normal"><a href="#__codelineno-6-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nb">source</span><span class="w"> </span><span class="nv">$WORK</span>/OpenFOAM/OpenFOAM-v2312/etc/bashrc
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="nv">$WM_PROJECT_USER_DIR</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>mkdir<span class="w"> </span><span class="nv">$WM_PROJECT_USER_DIR</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$WM_PROJECT_USER_DIR</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span>modules<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>mkdir<span class="w"> </span>modules
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="nb">cd</span><span class="w"> </span>modules
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/daidezhi/geometricVofExt.git
+</span></code></pre></div></td></tr></table></div></p>
+<h2 id="3-build">3. Build<a class="headerlink" href="#3-build" title="Permanent link">&para;</a></h2>
+<div class="admonition danger">
+<p class="admonition-title">Start an <code>idev</code> (Interactive DEVelopment) session before building</p>
+<ul>
+<li>Do <strong>NOT</strong> build OpenFOAM on the login nodes. These nodes have a strict process limit (maximum of 300), which is insufficient for compiling large-scale software.</li>
+<li>Use the <code>idev</code> utility to request an interactive session on a compute node. This provides the necessary resources for building and running MPI-based applications like OpenFOAM.</li>
+<li>To start an interactive session, run:
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a>idev<span class="w"> </span>-N<span class="w"> </span><span class="m">1</span><span class="w"> </span>-n<span class="w"> </span><span class="m">16</span><span class="w"> </span>-p<span class="w"> </span>vm-small<span class="w"> </span>-t<span class="w"> </span><span class="m">48</span>:00:00
+</span></code></pre></div></td></tr></table></div>
+This command allocates <code>16</code> cores in a compute node in the <code>vm-small</code> queue for <code>48</code> hours. <code>vm-small</code> is designed for users who only need a subset of a node's entire 128 cores in the <code>normal</code> queue.</li>
+</ul>
+</div>
+<h3 id="31-compile-cgal-with-gmp-and-mpfr-using-system-gcc">3.1 Compile <code>CGAL</code> with <code>GMP</code> and <code>MPFR</code> Using System GCC<a class="headerlink" href="#31-compile-cgal-with-gmp-and-mpfr-using-system-gcc" title="Permanent link">&para;</a></h3>
+<p>The GNU Multiple Precision Arithmetic (<code>GMP</code>) and GNU Multiple Precision Floating-Point Reliably (<code>MPFR</code>) Libraries are highly recommended for use with CGAL. Otherwise, the <code>setVofField</code> and <code>setShapedFields</code> utilities will operate in a low-efficiency mode.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Library</th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>GMP-6.2.1</code></td>
+<td style="text-align: left;"><code>GMP</code>: GNU Multiple Precision Arithmetic Library</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>MPFR-4.1.0</code></td>
+<td style="text-align: left;"><code>MPFR</code>: GNU Multiple Precision Floating-Point Reliably Library</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>MPC-1.2.1</code></td>
+<td style="text-align: left;"><code>MPC</code>: GNU Multiple-Precision C Library</td>
+</tr>
+</tbody>
+</table>
+<p>Build <code>CGAL-4.14.3</code> with the following commands:</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<span class="normal"><a href="#__codelineno-8-2">2</a></span>
+<span class="normal"><a href="#__codelineno-8-3">3</a></span>
+<span class="normal"><a href="#__codelineno-8-4">4</a></span>
+<span class="normal"><a href="#__codelineno-8-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nb">source</span><span class="w"> </span><span class="nv">$WORK</span>/OpenFOAM/OpenFOAM-v2312/etc/bashrc
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$WM_PROJECT_USER_DIR</span>/modules/geometricVofExt
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a>./compileCGALWithGMPAndMPFRUsingSystemGCC
+</span></code></pre></div></td></tr></table></div>
+<h3 id="32-build-ccmio-261">3.2 Build <code>ccmio 2.6.1</code><a class="headerlink" href="#32-build-ccmio-261" title="Permanent link">&para;</a></h3>
+<p><code>ccmio 2.6.1</code> is a C++ I/O library developed by CD-adapco (now part of Siemens) for reading and writing files in the CCM+ format used by STAR-CCM+. It provides an API to access mesh, solution data, and metadata from <code>*.ccm</code> files.</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">2</a></span>
+<span class="normal"><a href="#__codelineno-9-3">3</a></span>
+<span class="normal"><a href="#__codelineno-9-4">4</a></span>
+<span class="normal"><a href="#__codelineno-9-5">5</a></span>
+<span class="normal"><a href="#__codelineno-9-6">6</a></span>
+<span class="normal"><a href="#__codelineno-9-7">7</a></span>
+<span class="normal"><a href="#__codelineno-9-8">8</a></span>
+<span class="normal"><a href="#__codelineno-9-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nb">source</span><span class="w"> </span><span class="nv">$WORK</span>/OpenFOAM/OpenFOAM-v2312/etc/bashrc
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$WM_THIRD_PARTY_DIR</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span>libccmio-2.6.1.tar.gz<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>wget<span class="w"> </span>-nv<span class="w"> </span>https://sourceforge.net/projects/foam-extend/files/ThirdParty/libccmio-2.6.1.tar.gz<span class="w"> </span>--no-check-certificate
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span>libccmio-2.6.1<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>tar<span class="w"> </span>-xzf<span class="w"> </span>libccmio-2.6.1.tar.gz
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a>./makeCCMIO<span class="w"> </span>lib
+</span></code></pre></div></td></tr></table></div>
+<h3 id="33-build-openfoam-v2312">3.3 Build <code>OpenFOAM-v2312</code><a class="headerlink" href="#33-build-openfoam-v2312" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span>
+<span class="normal"><a href="#__codelineno-10-3">3</a></span>
+<span class="normal"><a href="#__codelineno-10-4">4</a></span>
+<span class="normal"><a href="#__codelineno-10-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="nb">source</span><span class="w"> </span><span class="nv">$WORK</span>/OpenFOAM/OpenFOAM-v2312/etc/bashrc
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$WM_PROJECT_DIR</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a>./Allwmake<span class="w"> </span>-j16
+</span></code></pre></div></td></tr></table></div>
+<h3 id="34-enable-initial-time-sampling-optional">3.4 Enable Initial Time Sampling <em>(optional)</em><a class="headerlink" href="#34-enable-initial-time-sampling-optional" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
+<span class="normal"><a href="#__codelineno-11-2">2</a></span>
+<span class="normal"><a href="#__codelineno-11-3">3</a></span>
+<span class="normal"><a href="#__codelineno-11-4">4</a></span>
+<span class="normal"><a href="#__codelineno-11-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="nb">source</span><span class="w"> </span><span class="nv">$WORK</span>/OpenFOAM/OpenFOAM-v2312/etc/bashrc
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$WM_PROJECT_USER_DIR</span>/modules/geometricVofExt
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a>./enableInitialTimeWriting
+</span></code></pre></div></td></tr></table></div>
+<h3 id="35-build-geometricvofext">3.5 Build <code>geometricVofExt</code><a class="headerlink" href="#35-build-geometricvofext" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span>
+<span class="normal"><a href="#__codelineno-12-3">3</a></span>
+<span class="normal"><a href="#__codelineno-12-4">4</a></span>
+<span class="normal"><a href="#__codelineno-12-5">5</a></span>
+<span class="normal"><a href="#__codelineno-12-6">6</a></span>
+<span class="normal"><a href="#__codelineno-12-7">7</a></span>
+<span class="normal"><a href="#__codelineno-12-8">8</a></span>
+<span class="normal"><a href="#__codelineno-12-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="nb">source</span><span class="w"> </span><span class="nv">$WORK</span>/OpenFOAM/OpenFOAM-v2312/etc/bashrc
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="nb">cd</span><span class="w"> </span><span class="nv">$WM_PROJECT_USER_DIR</span>/modules/geometricVofExt
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a>./Allwmake<span class="w"> </span>-j16
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6"></a>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$WM_PROJECT_USER_DIR</span>/applications/utilities
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8"></a>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a>./compileWaves2FoamInOpenFOAM2312
+</span></code></pre></div></td></tr></table></div>
+<p><img src="../../../images/logo_dezhi.png" width="220px" alter="geometricVofExt" align=right></p>
+<hr />
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 24, 2025 17:07:14 CDT">July 24, 2025</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 24, 2025 17:07:14 CDT">July 24, 2025</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2025, Dezhi Dai
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.tabs.link", "content.code.annotate", "content.code.copy", "content.code.select", "navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "content.icons", "content.action.edit", "content.action.view", "content.footer.last-updated"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
