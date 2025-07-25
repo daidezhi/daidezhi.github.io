@@ -998,13 +998,17 @@
 <div class="admonition warning">
 <p class="admonition-title">Login Node Usages</p>
 <ul>
-<li>The login nodes are for</li>
+<li>The login nodes are for<ul>
 <li>Editing and managing files</li>
 <li>Compiling code <em>(small scale)</em></li>
 <li>Submitting and tracking jobs</li>
-<li>Do <strong>NOT</strong></li>
+</ul>
+</li>
+<li>Do <strong>NOT</strong><ul>
 <li>Run jobs</li>
 <li>Perform intensive computational activities, even for post-processing</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -1194,7 +1198,7 @@
 </tr>
 </tbody>
 </table>
-<p>Add the following lines to <code>$WM_PROJECT_DIR/etc/config.sh/settings</code> after <code>Line 220</code> (which is <code>case "$WM_COMPILER_TYPE-$WM_COMPILER" in</code>) </p>
+<p>Add the following lines to <code>$WM_PROJECT_DIR/etc/config.sh/settings</code> after <code>Line 220</code> (which is <code>case "$WM_COMPILER_TYPE-$WM_COMPILER" in</code>)</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
